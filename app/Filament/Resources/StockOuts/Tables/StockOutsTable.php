@@ -16,28 +16,28 @@ class StockOutsTable
         return $table
             ->columns([
                 TextColumn::make('code')
-                    ->label('Transaction Code')
+                    ->label('Kode Transaksi')
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 TextColumn::make('movement_date')
-                    ->label('Date')
+                    ->label('Tanggal')
                     ->date('d M Y')
                     ->sortable(),
                 TextColumn::make('source')
-                    ->label('Destination')
+                    ->label('Tujuan')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('createdBy.name')
-                    ->label('Created By')
+                    ->label('Dibuat Oleh')
                     ->sortable()
                     ->toggleable(),
                 TextColumn::make('items_count')
-                    ->label('Items')
+                    ->label('Jumlah Barang')
                     ->counts('items')
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->label('Created At')
+                    ->label('Dibuat Pada')
                     ->dateTime('d M Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -23,15 +23,15 @@ class StockOutResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowUpTray;
 
-    protected static ?string $navigationLabel = 'Stock Out';
+    protected static ?string $navigationLabel = 'Barang Keluar';
 
-    protected static ?string $modelLabel = 'Stock Out';
+    protected static ?string $modelLabel = 'Barang Keluar';
 
-    protected static ?string $pluralModelLabel = 'Stock Out';
+    protected static ?string $pluralModelLabel = 'Barang Keluar';
 
     protected static ?int $navigationSort = 5;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|\UnitEnum|null $navigationGroup = 'Sirkulasi Barang';
 
     public static function form(Schema $schema): Schema
     {

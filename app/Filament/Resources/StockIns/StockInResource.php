@@ -23,15 +23,15 @@ class StockInResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowDownTray;
 
-    protected static ?string $navigationLabel = 'Stock In';
+    protected static ?string $navigationLabel = 'Barang Masuk';
 
-    protected static ?string $modelLabel = 'Stock In';
+    protected static ?string $modelLabel = 'Barang Masuk';
 
-    protected static ?string $pluralModelLabel = 'Stock In';
+    protected static ?string $pluralModelLabel = 'Barang Masuk';
 
     protected static ?int $navigationSort = 4;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|\UnitEnum|null $navigationGroup = 'Sirkulasi Barang';
 
     public static function form(Schema $schema): Schema
     {

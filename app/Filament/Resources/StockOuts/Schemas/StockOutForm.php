@@ -19,12 +19,12 @@ class StockOutForm
     {
         return $schema
             ->components([
-                Section::make('Transaction Information')
-                    ->description('Manage outgoing stock transaction details')
+                Section::make('Informasi Transaksi')
+                    ->description('Kelola detail transaksi barang keluar')
                     ->schema([
                         TextInput::make('code')
-                            ->label('Transaction Code')
-                            ->placeholder('Click to generate')
+                            ->label('Kode Transaksi')
+                            ->placeholder('Klik untuk generate')
                             ->suffixAction(
                                 Action::make('generate')
                                     ->icon('heroicon-m-arrow-path')
@@ -41,24 +41,24 @@ class StockOutForm
                             ->disabled()
                             ->dehydrated(),
                         DatePicker::make('movement_date')
-                            ->label('Transaction Date')
+                            ->label('Tanggal Transaksi')
                             ->required()
                             ->native(false)
                             ->default(now())
                             ->closeOnDateSelection(),
                         TextInput::make('source')
-                            ->label('Destination/Project')
-                            ->placeholder('e.g. Project A, Warehouse B, Site C')
+                            ->label('Tujuan/Proyek')
+                            ->placeholder('Contoh: Proyek A, Gudang B, Lokasi C')
                             ->maxLength(255)
                             ->autocomplete(false)
                             ->required(),
                         Textarea::make('notes')
-                            ->label('Notes')
-                            ->placeholder('Additional notes about this transaction...')
+                            ->label('Catatan')
+                            ->placeholder('Catatan tambahan tentang transaksi...')
                             ->rows(3)
                             ->columnSpanFull(),
                         FileUpload::make('attachments')
-                            ->label('Attachments')
+                            ->label('Lampiran')
                             ->multiple()
                             ->downloadable()
                             ->openable()
@@ -69,7 +69,7 @@ class StockOutForm
                             ->hidden()
                             ->dehydrated(),
                         Select::make('created_by')
-                            ->label('Created By')
+                            ->label('Dibuat Oleh')
                             ->relationship('createdBy', 'name')
                             ->required()
                             ->searchable()
@@ -80,14 +80,14 @@ class StockOutForm
                     ->columns(2)
                     ->columnSpanFull(),
 
-                Section::make('Items Detail')
-                    ->description('Add items for this stock out transaction')
+                Section::make('Detail Barang')
+                    ->description('Tambahkan barang untuk transaksi barang keluar')
                     ->schema([
                         Repeater::make('items')
                             ->relationship()
                             ->schema([
                                 Select::make('item_id')
-                                    ->label('Item')
+                                    ->label('Barang')
                                     ->relationship('item', 'name')
                                     ->searchable()
                                     ->preload()
@@ -95,39 +95,39 @@ class StockOutForm
                                     ->reactive()
                                     ->createOptionForm([
                                         TextInput::make('code')
-                                            ->label('Item Code')
+                                            ->label('Kode Barang')
                                             ->default(fn () => 'ITM-'.strtoupper(Str::random(8)))
                                             ->required()
                                             ->unique(ignoreRecord: true)
                                             ->disabled(),
 
                                         TextInput::make('name')
-                                            ->label('Item Name')
+                                            ->label('Nama Barang')
                                             ->required()
                                             ->autocomplete(false),
 
                                         Select::make('unit_id')
-                                            ->label('Unit')
+                                            ->label('Satuan')
                                             ->relationship('unit', 'name')
                                             ->required()
                                             ->searchable()
                                             ->preload(),
 
                                         Select::make('category_id')
-                                            ->label('Category')
+                                            ->label('Kategori')
                                             ->relationship('category', 'name')
                                             ->required()
                                             ->searchable()
                                             ->preload(),
 
                                         Textarea::make('description')
-                                            ->label('Description')
+                                            ->label('Deskripsi')
                                             ->rows(2),
                                     ])
                                     ->columnSpanFull(),
 
                                 TextInput::make('quantity')
-                                    ->label('Quantity')
+                                    ->label('Jumlah')
                                     ->numeric()
                                     ->required()
                                     ->minValue(0.01)
@@ -137,7 +137,7 @@ class StockOutForm
                             ])
                             ->columns(2)
                             ->defaultItems(1)
-                            ->addActionLabel('Add Item')
+                            ->addActionLabel('Tambah Barang')
                             ->reorderable(false)
                             ->collapsible()
                             ->cloneable()

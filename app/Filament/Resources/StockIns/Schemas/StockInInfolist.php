@@ -14,48 +14,48 @@ class StockInInfolist
     {
         return $schema
             ->components([
-                Section::make('Transaction Details')
-                    ->description('Complete information about stock in transaction')
+                Section::make('Detail Transaksi')
+                    ->description('Informasi lengkap tentang transaksi barang masuk')
                     ->schema([
                         TextEntry::make('code')
-                            ->label('Transaction Code'),
+                            ->label('Kode Transaksi'),
                         TextEntry::make('movement_date')
-                            ->label('Transaction Date')
+                            ->label('Tanggal Transaksi')
                             ->date('d M Y'),
                         TextEntry::make('source')
                             ->label('Supplier')
                             ->placeholder('-'),
                         TextEntry::make('notes')
-                            ->label('Notes')
-                            ->placeholder('No notes')
+                            ->label('Catatan')
+                            ->placeholder('Tidak ada catatan')
                             ->columnSpanFull(),
                         ImageEntry::make('attachments')
-                            ->label('Attachments')
+                            ->label('Lampiran')
                             ->visible(fn ($record) => ! empty($record->attachments))
                             ->columnSpanFull(),
                         TextEntry::make('createdBy.name')
-                            ->label('Created By'),
+                            ->label('Dibuat Oleh'),
                         TextEntry::make('created_at')
-                            ->label('Created At')
+                            ->label('Dibuat Pada')
                             ->dateTime('d M Y H:i')
                             ->placeholder('-'),
                     ])
                     ->columns(3)
                     ->columnSpanFull(),
 
-                Section::make('Items List')
-                    ->description('Items involved in this transaction')
+                Section::make('Daftar Barang')
+                    ->description('Barang yang terlibat dalam transaksi ini')
                     ->schema([
                         RepeatableEntry::make('items')
                             ->label('')
                             ->schema([
                                 TextEntry::make('item.name')
-                                    ->label('Item Name'),
+                                    ->label('Nama Barang'),
                                 TextEntry::make('item.unit.name')
-                                    ->label('Unit')
+                                    ->label('Satuan')
                                     ->placeholder('-'),
                                 TextEntry::make('quantity')
-                                    ->label('Quantity'),
+                                    ->label('Jumlah'),
                             ])
                             ->columns(3)
                             ->columnSpanFull(),

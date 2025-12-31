@@ -28,7 +28,7 @@ class UnitResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Inventory';
+    protected static string|\UnitEnum|null $navigationGroup = 'Master Data';
 
     public static function form(Schema $schema): Schema
     {
