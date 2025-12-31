@@ -15,6 +15,7 @@ class StockMovement extends Model
         'source',
         'notes',
         'created_by',
+        'attachments',
     ];
 
     protected function casts(): array

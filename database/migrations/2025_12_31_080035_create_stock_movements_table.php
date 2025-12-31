@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('type', ['in', 'out']);         // Masuk / Keluar
 
             $table->string('source')->nullable();        // Supplier / Gudang / Proyek
+            $table->string('attachments')->nullable();        // Supplier / Gudang / Proyek
             $table->text('notes')->nullable();           // Catatan
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();           // Penanggung Jawab
 
