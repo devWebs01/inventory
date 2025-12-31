@@ -6,7 +6,6 @@ use App\Models\Item;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -97,6 +96,11 @@ class StockMovementForm
                                     ->preload()
                                     ->required()
                                     ->reactive()
+                                    ->afterStateUpdated(function ($state, $set) {
+                                        $unitName = Item::find($state)?->unit?->name ?? '-';
+
+                                        $set('unit_placeholder', $unitName);
+                                    })
                                     ->createOptionForm([
                                         TextInput::make('code')
                                             ->label('Kode Barang')
@@ -104,33 +108,26 @@ class StockMovementForm
                                             ->required()
                                             ->unique(ignoreRecord: true)
                                             ->disabled(),
+
                                         TextInput::make('name')
                                             ->label('Nama Barang')
-                                            ->required()
-                                            ->autocomplete(false),
+                                            ->required(),
+
                                         Select::make('unit_id')
                                             ->label('Satuan')
                                             ->relationship('unit', 'name')
-                                            ->required()
-                                            ->searchable()
-                                            ->preload(),
+                                            ->required(),
+
                                         Select::make('category_id')
                                             ->label('Kategori')
                                             ->relationship('category', 'name')
-                                            ->required()
-                                            ->searchable()
-                                            ->preload(),
-                                        Textarea::make('description')
-                                            ->label('Deskripsi')
-                                            ->rows(2),
-                                    ])
-                                    ->columnSpanFull(),
-
-                                Placeholder::make('unit_placeholder')
+                                            ->required(),
+                                    ]),
+                                TextInput::make('unit_placeholder')
                                     ->label('Satuan')
-                                    ->content(
-                                        fn ($get) => Item::find($get('item_id'))?->unit?->name ?? '-'
-                                    ),
+                                    ->disabled()
+                                    ->dehydrated(false)
+                                    ->default('-'),
 
                                 TextInput::make('quantity')
                                     ->label('Jumlah')
@@ -149,7 +146,7 @@ class StockMovementForm
                                     ->step(0.01)
                                     ->autocomplete(false),
                             ])
-                            ->columns(3)
+                            ->columns(2)
                             ->defaultItems(1)
                             ->addActionLabel('Tambah Barang')
                             ->reorderable(false)

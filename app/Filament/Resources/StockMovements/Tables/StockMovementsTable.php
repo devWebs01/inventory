@@ -6,7 +6,6 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -21,7 +20,8 @@ class StockMovementsTable
                     ->label('Kode Transaksi')
                     ->searchable()
                     ->toggleable(),
-                IconColumn::make('type')
+
+                TextColumn::make('type')
                     ->label('Tipe')
                     ->icon(fn (string $state): string => match ($state) {
                         'in' => 'heroicon-o-arrow-down-tray',
@@ -38,6 +38,7 @@ class StockMovementsTable
                         'out' => 'Keluar',
                         default => $state,
                     }),
+
                 TextColumn::make('movement_date')
                     ->label('Tanggal')
                     ->date('d M Y')
