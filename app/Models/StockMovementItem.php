@@ -11,15 +11,12 @@ class StockMovementItem extends Model
         'stock_movement_id',
         'item_id',
         'quantity',
-        'unit',
-        'price',
     ];
 
     protected function casts(): array
     {
         return [
             'quantity' => 'decimal:2',
-            'price' => 'decimal:2',
         ];
     }
 

@@ -23,8 +23,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->decimal('quantity', 15, 2);          // Jumlah
-            $table->string('unit');                      // Satuan (snapshot)
-            $table->decimal('price', 15, 2)->nullable(); // Opsional (harga)
             $table->timestamps();
         });
     }
