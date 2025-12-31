@@ -18,11 +18,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
-
         $this->call([
             ShieldSeeder::class,
+            UnitSeeder::class,
             CategorySeeder::class,
+            ItemSeeder::class,
+            StockMovementSeeder::class,
+            StockMovementItemSeeder::class,
         ]);
 
         $faker = Faker::create();

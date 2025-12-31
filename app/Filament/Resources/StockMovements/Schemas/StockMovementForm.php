@@ -21,40 +21,59 @@ class StockMovementForm
     {
         return $schema
             ->components([
-                Section::make()
+                Section::make('Informasi Transaksi')
+                    ->description('Kelola data mutasi stok barang masuk dan keluar')
                     ->schema([
                         TextInput::make('code')
-                            ->label('Kode Barang')
+                            ->label('Kode Transaksi')
                             ->placeholder('Klik untuk generate')
                             ->suffixAction(
                                 Action::make('generate')
                                     ->icon('heroicon-m-arrow-path')
+                                    ->label('Generate')
                                     ->action(
-                                        fn ($set) => $set('code', 'ITM-'.strtoupper(Str::random(8)))
+                                        fn ($set) => $set('code', 'TRX-'.strtoupper(Str::random(8)))
                                     )
                             )
                             ->required()
-                            ->default(fn () => 'ITM-'.strtoupper(Str::random(8)))
-                            ->unique(),
+                            ->default(fn () => 'TRX-'.strtoupper(Str::random(8)))
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255)
+                            ->autocomplete(false),
                         DatePicker::make('movement_date')
+                            ->label('Tanggal Transaksi')
                             ->required()
                             ->native(false)
-                            ->default(now()),
+                            ->default(now())
+                            ->closeOnDateSelection(),
                         Select::make('type')
+                            ->label('Tipe Mutasi')
                             ->required()
                             ->options([
                                 'in' => 'Masuk',
                                 'out' => 'Keluar',
                             ])
-                            ->native(false),
+                            ->native(false)
+                            ->default('in'),
                         TextInput::make('source')
-                            ->maxLength(255),
+                            ->label('Sumber/Tujuan')
+                            ->placeholder('Contoh: Supplier ABC, Gudang A, Proyek X')
+                            ->maxLength(255)
+                            ->autocomplete(false),
                         Textarea::make('notes')
+                            ->label('Catatan')
+                            ->placeholder('Catatan tambahan tentang transaksi...')
+                            ->rows(3)
                             ->columnSpanFull(),
-
                         FileUpload::make('attachments')
-                            ->multiple(),
+                            ->label('Lampiran')
+                            ->multiple()
+                            ->downloadable()
+                            ->openable()
+                            ->directory('stock-movement-attachments')
+                            ->columnSpanFull(),
                         Select::make('created_by')
+                            ->label('Dibuat Oleh')
                             ->relationship('createdBy', 'name')
                             ->required()
                             ->searchable()
@@ -65,55 +84,79 @@ class StockMovementForm
                     ->columns(2)
                     ->columnSpanFull(),
 
-                Repeater::make('items')
-                    ->relationship()
+                Section::make('Detail Barang')
+                    ->description('Tambahkan barang yang akan dimutasi')
                     ->schema([
-                        Select::make('item_id')
-                            ->label('Barang')
-                            ->relationship('item', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->reactive()
-                            ->createOptionForm([
-                                TextInput::make('code')
-                                    ->default(fn () => 'ITM-'.strtoupper(Str::random(8)))
+                        Repeater::make('items')
+                            ->relationship()
+                            ->schema([
+                                Select::make('item_id')
+                                    ->label('Barang')
+                                    ->relationship('item', 'name')
+                                    ->searchable()
+                                    ->preload()
                                     ->required()
-                                    ->unique(ignoreRecord: true),
+                                    ->reactive()
+                                    ->createOptionForm([
+                                        TextInput::make('code')
+                                            ->label('Kode Barang')
+                                            ->default(fn () => 'ITM-'.strtoupper(Str::random(8)))
+                                            ->required()
+                                            ->unique(ignoreRecord: true)
+                                            ->disabled(),
+                                        TextInput::make('name')
+                                            ->label('Nama Barang')
+                                            ->required()
+                                            ->autocomplete(false),
+                                        Select::make('unit_id')
+                                            ->label('Satuan')
+                                            ->relationship('unit', 'name')
+                                            ->required()
+                                            ->searchable()
+                                            ->preload(),
+                                        Select::make('category_id')
+                                            ->label('Kategori')
+                                            ->relationship('category', 'name')
+                                            ->required()
+                                            ->searchable()
+                                            ->preload(),
+                                        Textarea::make('description')
+                                            ->label('Deskripsi')
+                                            ->rows(2),
+                                    ])
+                                    ->columnSpanFull(),
 
-                                TextInput::make('name')
-                                    ->required(),
-
-                                Select::make('unit_id')
+                                Placeholder::make('unit_placeholder')
                                     ->label('Satuan')
-                                    ->relationship('unit', 'name')
-                                    ->required(),
+                                    ->content(
+                                        fn ($get) => Item::find($get('item_id'))?->unit?->name ?? '-'
+                                    ),
 
-                                Select::make('category_id')
-                                    ->relationship('category', 'name')
-                                    ->required(),
+                                TextInput::make('quantity')
+                                    ->label('Jumlah')
+                                    ->numeric()
+                                    ->required()
+                                    ->minValue(0.01)
+                                    ->step(0.01)
+                                    ->default(1)
+                                    ->autocomplete(false),
 
-                                Textarea::make('description'),
+                                TextInput::make('price')
+                                    ->label('Harga Satuan')
+                                    ->numeric()
+                                    ->prefix('Rp')
+                                    ->minValue(0)
+                                    ->step(0.01)
+                                    ->autocomplete(false),
                             ])
+                            ->columns(3)
+                            ->defaultItems(1)
+                            ->addActionLabel('Tambah Barang')
+                            ->reorderable(false)
+                            ->collapsible()
+                            ->cloneable()
                             ->columnSpanFull(),
-
-                        Placeholder::make('unit')
-                            ->label('Satuan')
-                            ->content(
-                                fn ($get) => Item::find($get('item_id'))?->unit?->name ?? '-'
-                            ),
-
-                        TextInput::make('quantity')
-                            ->label('Jumlah')
-                            ->numeric()
-                            ->required()
-                            ->minValue(1),
-
                     ])
-                    ->columns(4)
-                    ->defaultItems(1)
-                    ->addActionLabel('Tambah Barang')
-                    ->reorderable(false)
                     ->columnSpanFull(),
             ]);
     }

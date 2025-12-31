@@ -20,7 +20,17 @@ class ItemResource extends Resource
 {
     protected static ?string $model = Item::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
+
+    protected static ?string $navigationLabel = 'Barang';
+
+    protected static ?string $modelLabel = 'Barang';
+
+    protected static ?string $pluralModelLabel = 'Barang';
+
+    protected static ?int $navigationSort = 1;
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Inventory';
 
     public static function form(Schema $schema): Schema
     {

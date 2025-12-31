@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -17,32 +18,56 @@ class StockMovementsTable
         return $table
             ->columns([
                 TextColumn::make('code')
-                    ->searchable(),
-                TextColumn::make('movement_date')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('type')
+                    ->label('Kode Transaksi')
+                    ->searchable()
+                    ->toggleable(),
+                IconColumn::make('type')
+                    ->label('Tipe')
+                    ->icon(fn (string $state): string => match ($state) {
+                        'in' => 'heroicon-o-arrow-down-tray',
+                        'out' => 'heroicon-o-arrow-up-tray',
+                        default => 'heroicon-o-question-mark-circle',
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'in' => 'success',
+                        'out' => 'danger',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'in' => 'Masuk',
                         'out' => 'Keluar',
                         default => $state,
-                    })
-                    ->searchable(),
+                    }),
+                TextColumn::make('movement_date')
+                    ->label('Tanggal')
+                    ->date('d M Y')
+                    ->sortable(),
                 TextColumn::make('source')
-                    ->searchable(),
+                    ->label('Sumber/Tujuan')
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('createdBy.name')
+                    ->label('Dibuat Oleh')
+                    ->sortable()
+                    ->toggleable(),
+                TextColumn::make('items_count')
+                    ->label('Jumlah Barang')
+                    ->counts('items')
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Dibuat Pada')
+                    ->dateTime('d M Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Diperbarui Pada')
+                    ->dateTime('d M Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('type')
+                    ->label('Tipe Mutasi')
                     ->options([
                         'in' => 'Masuk',
                         'out' => 'Keluar',

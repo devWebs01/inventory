@@ -1,42 +1,23 @@
 <?php
 
-namespace App\Filament\Resources\Categories\Tables;
+namespace App\Filament\Resources\Units\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
-class CategoriesTable
+class UnitsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nama Kategori')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('type')
-                    ->label('Tipe')
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'asset' => 'Aset',
-                        'inventory' => 'Barang / Persediaan',
-                        'both' => 'Aset & Barang',
-                        'other' => 'Lainnya',
-                        default => $state,
-                    })
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'asset' => 'info',
-                        'inventory' => 'success',
-                        'both' => 'warning',
-                        'other' => 'gray',
-                        default => 'gray',
-                    })
+                    ->label('Nama Satuan')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('items_count')
@@ -55,14 +36,13 @@ class CategoriesTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('type')
-                    ->label('Tipe')
-                    ->options([
-                        'asset' => 'Aset',
-                        'inventory' => 'Barang / Persediaan',
-                        'both' => 'Aset & Barang',
-                        'other' => 'Lainnya',
-                    ]),
+                TernaryFilter::make('has_items')
+                    ->label('Memiliki Barang')
+                    ->nullable()
+                    ->queries(
+                        true: fn ($query) => $query->whereHas('items'),
+                        false: fn ($query) => $query->whereDoesntHave('items'),
+                    ),
             ])
             ->recordActions([
                 EditAction::make()->button(),

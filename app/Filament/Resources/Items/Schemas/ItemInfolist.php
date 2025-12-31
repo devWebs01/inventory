@@ -13,26 +13,40 @@ class ItemInfolist
     {
         return $schema
             ->components([
-                Section::make()
+                Section::make('Detail Barang')
+                    ->description('Informasi lengkap tentang barang')
                     ->schema([
-                        TextEntry::make('code'),
-                        TextEntry::make('name'),
+                        TextEntry::make('code')
+                            ->label('Kode Barang'),
+                        TextEntry::make('name')
+                            ->label('Nama Barang')
+                            ->columnSpanFull(),
+                        TextEntry::make('category.name')
+                            ->label('Kategori'),
                         TextEntry::make('stock')
-                            ->numeric(),
-                        TextEntry::make('unit.name'),
-                        TextEntry::make('category.name'),
+                            ->label('Stok Saat Ini')
+                            ->numeric()
+                            ->badge()
+                            ->color(fn (string $state): string => (int) $state > 10 ? 'success' : ((int) $state > 0 ? 'warning' : 'danger')),
+                        TextEntry::make('unit.name')
+                            ->label('Satuan'),
                         TextEntry::make('description')
-                            ->placeholder('-')
+                            ->label('Deskripsi')
+                            ->placeholder('Tidak ada deskripsi')
                             ->columnSpanFull(),
                         IconEntry::make('is_active')
+                            ->label('Status Aktif')
                             ->boolean(),
                         TextEntry::make('created_at')
-                            ->dateTime()
+                            ->label('Dibuat Pada')
+                            ->dateTime('d M Y H:i')
                             ->placeholder('-'),
                         TextEntry::make('updated_at')
-                            ->dateTime()
+                            ->label('Diperbarui Pada')
+                            ->dateTime('d M Y H:i')
                             ->placeholder('-'),
-                    ]),
+                    ])
+                    ->columns(3),
             ]);
     }
 }

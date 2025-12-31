@@ -18,7 +18,8 @@ class ItemForm
     {
         return $schema
             ->components([
-                Section::make()
+                Section::make('Informasi Barang')
+                    ->description('Kelola data barang atau persediaan')
                     ->schema([
                         TextInput::make('code')
                             ->label('Kode Barang')
@@ -26,29 +27,57 @@ class ItemForm
                             ->suffixAction(
                                 Action::make('generate')
                                     ->icon('heroicon-m-arrow-path')
+                                    ->label('Generate')
                                     ->action(
                                         fn ($set) => $set('code', 'ITM-'.strtoupper(Str::random(8)))
                                     )
                             )
                             ->required()
                             ->default(fn () => 'ITM-'.strtoupper(Str::random(8)))
-                            ->unique(),
-                        Select::make('category_id')
-                            ->relationship('category', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload(),
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255)
+                            ->autocomplete(false),
                         TextInput::make('name')
+                            ->label('Nama Barang')
+                            ->placeholder('Contoh: Semen Portland 50kg')
                             ->required()
                             ->maxLength(255)
+                            ->autocomplete(false)
                             ->columnSpanFull(),
+                        Select::make('category_id')
+                            ->label('Kategori')
+                            ->relationship('category', 'name')
+                            ->placeholder('Pilih kategori')
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->label('Nama Kategori')
+                                    ->required()
+                                    ->unique(ignoreRecord: true),
+                                Select::make('type')
+                                    ->label('Tipe Kategori')
+                                    ->options([
+                                        'asset' => 'Aset',
+                                        'inventory' => 'Barang / Persediaan',
+                                        'both' => 'Aset & Barang',
+                                        'other' => 'Lainnya',
+                                    ])
+                                    ->required()
+                                    ->default('asset'),
+                            ]),
                         TextInput::make('stock')
+                            ->label('Stok Saat Ini')
+                            ->placeholder('0')
                             ->required()
                             ->numeric()
-                            ->default(0),
+                            ->default(0)
+                            ->minValue(0),
                         Select::make('unit_id')
                             ->label('Satuan')
                             ->relationship('unit', 'name')
+                            ->placeholder('Pilih satuan')
                             ->searchable()
                             ->preload()
                             ->required()
@@ -58,14 +87,17 @@ class ItemForm
                                     ->required()
                                     ->unique(Unit::class, 'name'),
                             ]),
-
                         Textarea::make('description')
+                            ->label('Deskripsi')
+                            ->placeholder('Keterangan tambahan tentang barang...')
+                            ->rows(3)
                             ->columnSpanFull(),
                         Toggle::make('is_active')
-                            ->required()
-                            ->default(true),
+                            ->label('Status Aktif')
+                            ->default(true)
+                            ->inline(false),
                     ])
-                    ->columns(2)
+                    ->columns(3)
                     ->columnSpanFull(),
             ]);
     }

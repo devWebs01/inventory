@@ -13,23 +13,30 @@ class CategoryForm
     {
         return $schema
             ->components([
-                Section::make('-')
-                    ->description('-')
+                Section::make('Informasi Kategori')
+                    ->description('Kelola data kategori untuk pengelompokan barang')
                     ->schema([
                         TextInput::make('name')
-                            ->required(),
+                            ->label('Nama Kategori')
+                            ->placeholder('Contoh: Semen, Bata, Cat, dll.')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255)
+                            ->autocomplete(false),
                         Select::make('type')
+                            ->label('Tipe Kategori')
                             ->options([
                                 'asset' => 'Aset',
                                 'inventory' => 'Barang / Persediaan',
                                 'both' => 'Aset & Barang',
                                 'other' => 'Lainnya',
                             ])
-
                             ->searchable()
                             ->required()
-                            ->default('asset'),
+                            ->default('asset')
+                            ->native(false),
                     ])
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
     }
