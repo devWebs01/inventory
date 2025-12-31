@@ -22,7 +22,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
 
-            $table->decimal('quantity', 15, 2);          // Jumlah
+            $table->string('quantity');          // Jumlah
             $table->timestamps();
         });
     }

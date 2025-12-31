@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\StockMovement;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class StockMovementSeeder extends Seeder
@@ -19,6 +21,11 @@ class StockMovementSeeder extends Seeder
         if (! $user) {
             $user = User::first();
         }
+
+        $imageUrl = 'https://imgv2-1-f.scribdassets.com/img/document/552588821/original/34eedda829/1?v=1';
+
+        // 📦 download gambar sekali saja
+        $imageContents = Http::get($imageUrl)->body();
 
         $movements = [
             [
@@ -112,10 +119,24 @@ class StockMovementSeeder extends Seeder
         ];
 
         foreach ($movements as $movement) {
-            StockMovement::firstOrCreate(
-                ['code' => $movement['code']],
-                $movement
-            );
+            // 🧬 nama file unik
+            $fileName = 'trx-'.Str::random(12).'.jpg';
+            $filePath = 'stock-movements/'.$fileName;
+
+            // 💾 simpan ke storage
+            Storage::disk('public')->put($filePath, $imageContents);
+
+            StockMovement::create([
+                'code' => 'TRX-'.strtoupper(Str::random(8)),
+                'movement_date' => $movement['movement_date'],
+                'type' => $movement['type'],
+                'source' => $movement['source'],
+                'notes' => $movement['notes'],
+                'created_by' => $user?->id,
+                'attachments' => [
+                    $filePath,
+                ],
+            ]);
         }
     }
 }

@@ -27,8 +27,7 @@ class StockMovementItemSeeder extends Seeder
                         $items[] = [
                             'item_id' => $item->getKey(),
                             'quantity' => 100,
-                            'unit' => $item->unit->name,
-                            'price' => 60000,
+
                         ];
                     }
                 }
@@ -39,8 +38,7 @@ class StockMovementItemSeeder extends Seeder
                         $items[] = [
                             'item_id' => $item->getKey(),
                             'quantity' => 5,
-                            'unit' => $item->unit->name,
-                            'price' => 250000,
+
                         ];
                     }
                 }
@@ -51,8 +49,7 @@ class StockMovementItemSeeder extends Seeder
                         $items[] = [
                             'item_id' => $item->getKey(),
                             'quantity' => 50,
-                            'unit' => $item->unit->name,
-                            'price' => 75000,
+
                         ];
                     }
                 }
@@ -69,8 +66,6 @@ class StockMovementItemSeeder extends Seeder
                             $items[] = [
                                 'item_id' => $item->getKey(),
                                 'quantity' => $itemData['qty'],
-                                'unit' => $item->unit->name,
-                                'price' => $itemData['price'],
                             ];
                         }
                     }
@@ -82,8 +77,7 @@ class StockMovementItemSeeder extends Seeder
                         $items[] = [
                             'item_id' => $item->getKey(),
                             'quantity' => 25,
-                            'unit' => $item->unit->name,
-                            'price' => 85000,
+
                         ];
                     }
                 }
@@ -99,8 +93,6 @@ class StockMovementItemSeeder extends Seeder
                             $items[] = [
                                 'item_id' => $item->getKey(),
                                 'quantity' => $itemData['qty'],
-                                'unit' => $item->unit->name,
-                                'price' => $itemData['price'],
                             ];
                         }
                     }
@@ -112,8 +104,7 @@ class StockMovementItemSeeder extends Seeder
                         $items[] = [
                             'item_id' => $item->getKey(),
                             'quantity' => 30,
-                            'unit' => $item->unit->name,
-                            'price' => 450000,
+
                         ];
                     }
                 }
@@ -136,8 +127,7 @@ class StockMovementItemSeeder extends Seeder
                         $items[] = [
                             'item_id' => $item->getKey(),
                             'quantity' => $itemData['qty'],
-                            'unit' => $item->unit->name,
-                            'price' => $itemData['price'],
+
                         ];
                     }
                 }
@@ -151,8 +141,6 @@ class StockMovementItemSeeder extends Seeder
                     ],
                     [
                         'quantity' => $itemData['quantity'],
-                        'unit' => $itemData['unit'],
-                        'price' => $itemData['price'],
                     ]
                 );
             }

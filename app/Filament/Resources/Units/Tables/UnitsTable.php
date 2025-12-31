@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Units\Tables;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -51,6 +52,8 @@ class UnitsTable
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    FilamentExportBulkAction::make('export'),
+
                 ]),
             ]);
     }

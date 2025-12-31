@@ -22,6 +22,7 @@ class StockMovement extends Model
     {
         return [
             'movement_date' => 'date',
+            'attachments' => 'array',
         ];
     }
 

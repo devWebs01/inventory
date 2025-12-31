@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\StockOuts\Tables;
 
+use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
@@ -46,12 +48,15 @@ class StockOutsTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                ViewAction::make()->button(),
+                EditAction::make()->button(),
+                DeleteAction::make()->button(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    FilamentExportBulkAction::make('export'),
+
                 ]),
             ]);
     }

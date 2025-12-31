@@ -13,13 +13,6 @@ class StockMovementItem extends Model
         'quantity',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'quantity' => 'decimal:2',
-        ];
-    }
-
     public function stockMovement(): BelongsTo
     {
         return $this->belongsTo(StockMovement::class);
