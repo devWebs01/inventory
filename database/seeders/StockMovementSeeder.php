@@ -118,20 +118,20 @@ class StockMovementSeeder extends Seeder
             ],
         ];
 
-        foreach ($movements as $movement) {
-            // 🧬 nama file unik
+        foreach ($movements as $movementData) {
+            // 🧬 nama file unik untuk setiap movement
             $fileName = 'trx-'.Str::random(12).'.jpg';
             $filePath = 'stock-movements/'.$fileName;
 
-            // 💾 simpan ke storage
+            // 💾 simpan gambar ke storage (reuse gambar yang sudah didownload)
             Storage::disk('public')->put($filePath, $imageContents);
 
             StockMovement::create([
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
-                'movement_date' => $movement['movement_date'],
-                'type' => $movement['type'],
-                'source' => $movement['source'],
-                'notes' => $movement['notes'],
+                'code' => $movementData['code'],
+                'movement_date' => $movementData['movement_date'],
+                'type' => $movementData['type'],
+                'source' => $movementData['source'],
+                'notes' => $movementData['notes'],
                 'created_by' => $user?->id,
                 'attachments' => [
                     $filePath,
