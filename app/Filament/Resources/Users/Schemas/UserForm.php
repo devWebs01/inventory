@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
+use Filament\Forms;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserForm
 {
@@ -14,28 +13,50 @@ class UserForm
     {
         return $schema
             ->components([
-                Section::make('-')
-                    ->description('-')
+                Section::make('Informasi Pengguna')
+                    ->description('Kelola data akun pengguna')
                     ->schema([
-                        TextInput::make('name')
-                            ->required(),
-                        TextInput::make('email')
-                            ->label('Email address')
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nama')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->label('Email')
                             ->email()
                             ->required()
-                            ->default(now())
-                            ->hidden(),
-                        TextInput::make('password')
+                            ->maxLength(255)
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\DateTimePicker::make('email_verified_at')
+                            ->label('Email Terverifikasi Pada')
+                            ->native(false)
+                            ->readOnly()
+                            ->hidden(fn (string $context): bool => $context === 'create')
+                            ->helperText('Otomatis terisi saat user verifikasi email'),
+                        Forms\Components\TextInput::make('password')
+                            ->label('Password')
                             ->password()
-                            ->required(fn ($record) => $record === null)
-                            ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
-                            ->dehydrated(fn ($state) => filled($state))
-                            ->label('Password'),
-                        Select::make('roles')
-                            ->relationship('roles', 'name')
+                            ->dehydrated(fn ($state): bool => filled($state))
+                            ->required(fn (string $context): bool => $context === 'create')
+                            ->rule(Password::default())
+                            ->dehydrateStateUsing(fn ($state) => filled($state) ? \Illuminate\Support\Facades\Hash::make($state) : null)
+                            ->revealable()
+                            ->helperText('Minimal 8 karakter'),
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull(),
+                Section::make('Hak Akses')
+                    ->description('Atur role dan hak akses pengguna')
+                    ->schema([
+                        Forms\Components\Select::make('roles')
+                            ->relationship(
+                                name: 'roles',
+                                titleAttribute: 'name',
+                            )
                             ->multiple()
                             ->preload()
-                            ->searchable(),
+                            ->searchable()
+                            ->label('Role')
+                            ->helperText('Pilih satu atau lebih role untuk pengguna ini'),
                     ])
                     ->columnSpanFull(),
             ]);
