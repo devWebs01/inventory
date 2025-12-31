@@ -74,9 +74,9 @@ class UserSeeder extends Seeder
          * 4. Buat user super_admin
          */
         User::firstOrCreate(
-            ['email' => 'admin@testing.com'],
+            ['email' => 'direktur@testing.com'],
             [
-                'name' => 'Super Admin',
+                'name' => 'Direktur',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
             ]
