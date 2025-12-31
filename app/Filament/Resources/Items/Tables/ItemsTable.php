@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class ItemsTable
@@ -21,12 +22,11 @@ class ItemsTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('stock')
-                    ->searchable(),
-                TextColumn::make('unit_id')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('category_id')
-                    ->numeric()
+                TextColumn::make('unit.name')
+                    ->sortable(),
+                TextColumn::make('category.name')
                     ->sortable(),
                 IconColumn::make('is_active')
                     ->boolean(),
@@ -40,7 +40,10 @@ class ItemsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('unit')
+                    ->relationship('unit', 'name'),
+                SelectFilter::make('category')
+                    ->relationship('category', 'name'),
             ])
             ->recordActions([
                 ViewAction::make(),

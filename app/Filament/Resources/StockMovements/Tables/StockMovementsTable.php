@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class StockMovementsTable
@@ -21,11 +22,15 @@ class StockMovementsTable
                     ->date()
                     ->sortable(),
                 TextColumn::make('type')
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'in' => 'Masuk',
+                        'out' => 'Keluar',
+                        default => $state,
+                    })
                     ->searchable(),
                 TextColumn::make('source')
                     ->searchable(),
-                TextColumn::make('created_by')
-                    ->numeric()
+                TextColumn::make('createdBy.name')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -37,7 +42,11 @@ class StockMovementsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('type')
+                    ->options([
+                        'in' => 'Masuk',
+                        'out' => 'Keluar',
+                    ]),
             ])
             ->recordActions([
                 ViewAction::make(),
