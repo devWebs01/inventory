@@ -22,6 +22,8 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'Pengguna';
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);
