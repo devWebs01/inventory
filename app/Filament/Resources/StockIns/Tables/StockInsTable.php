@@ -17,11 +17,6 @@ class StockInsTable
     {
         return $table
             ->columns([
-                TextColumn::make('code')
-                    ->label('Kode Transaksi')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('movement_date')
                     ->label('Tanggal')
                     ->date('d M Y')

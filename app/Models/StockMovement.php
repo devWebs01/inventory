@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class StockMovement extends Model
 {
     protected $fillable = [
-        'code',
         'movement_date',
         'type',
         'source',

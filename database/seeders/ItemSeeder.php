@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Unit;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class ItemSeeder extends Seeder
 {
@@ -92,10 +91,9 @@ class ItemSeeder extends Seeder
             if ($category && $unit) {
                 Item::firstOrCreate(
                     [
-                        'code' => 'ITM-'.strtoupper(substr(Str::slug($item['name'], ''), 0, 8)).'-'.rand(1000, 9999),
+                        'name' => $item['name'],
                     ],
                     [
-                        'name' => $item['name'],
                         'stock' => $item['stock'],
                         'category_id' => $category->id,
                         'unit_id' => $unit->id,

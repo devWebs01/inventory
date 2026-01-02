@@ -25,10 +25,6 @@ class RecentStockMovements extends TableWidget
                     ->limit(10)
             )
             ->columns([
-                Tables\Columns\TextColumn::make('code')
-                    ->label('Kode')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\BadgeColumn::make('type')
                     ->label('Tipe')
                     ->colors([

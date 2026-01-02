@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();           // Kode barang
             $table->string('name');                     // Nama barang
             $table->string('stock');                     // Stok barang
             $table->foreignId('unit_id')->constrained()->cascadeOnDelete();                     // Satuan (pcs, zak, kg, m3)

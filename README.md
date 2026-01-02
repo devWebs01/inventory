@@ -1,59 +1,193 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Manajemen Inventaris dan Aset
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi manajemen inventaris dan aset tetap yang komprehensif, dibangun dengan Laravel 12 dan Filament v4. Aplikasi ini dirancang untuk mengelola barang persediaan (inventory) dan aset tetap dengan pelacakan stok real-time dan audit trail yang lengkap.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Manajemen Inventaris
+- **Pelacakan Stok Real-time**: Stok barang diperbarui secara otomatis saat terjadi transaksi
+- **Kode Barang Otomatis**: Setiap barang mendapatkan kode unik dengan format ITM-XXXXXXX
+- **Kategori Fleksibel**: Dukungan kategori bertipe aset, inventaris, keduanya, atau lainnya
+- **Multi-Satuan**: Dukungan berbagai satuan ukuran (pcs, kg, meter, dll)
+- **Validasi Stok**: Mencegah stok negatif dengan validasi otomatis
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Manajemen Aset Tetap
+- **Register Aset**: Pencatatan aset tetap perusahaan
+- **Pelacakan Pembelian**: Harga, tanggal pembelian, dan kondisi aset
+- **Kategorisasi**: Pengelompokan aset berdasarkan kategori
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Gerak Barang (Stock Movement)
+- **Barang Masuk**: Pencatatan barang yang masuk ke gudang
+- **Barang Keluar**: Pencatatan barang yang keluar dari gudang
+- **Audit Trail**: Riwayat lengkap setiap transaksi
+- **Lampiran**: Dukungan upload dokumen/bukti transaksi
 
-## Learning Laravel
+### Keamanan & Otorisasi
+- **Role-Based Access Control**: Menggunakan Spatie Shield
+- **Policy-Based Authorization**: Kebijakan akses per model
+- **User Responsibility**: Setiap transaksi terhubung dengan pengguna
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Teknologi
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **PHP**: 8.3.6
+- **Laravel**: 12.x
+- **Filament**: 4.x (Admin Panel)
+- **Livewire**: 3.x
+- **Tailwind CSS**: 4.x
+- **MySQL**: Database
 
-## Laravel Sponsors
+## Struktur Database
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Tabel Utama
 
-### Premium Partners
+#### Master Data
+- `users` - Pengguna aplikasi
+- `categories` - Kategori barang dan aset
+- `units` - Satuan ukuran barang
+- `items` - Data barang/inventaris
+- `assets` - Data aset tetap
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+#### Transaksi
+- `stock_movements` - Header transaksi barang masuk/keluar
+- `stock_movement_items` - Detail item dalam setiap transaksi
 
-## Contributing
+#### Relasi
+```
+Category (1) → (N) Item
+Category (1) → (N) Asset
+Unit (1) → (N) Item
+User (1) → (N) StockMovement
+StockMovement (1) → (N) StockMovementItem
+Item (1) → (N) StockMovementItem
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Resource Filament
 
-## Code of Conduct
+### Data Master
+1. **Kategori** (`/admin/kategori`)
+   - Manajemen kategori barang dan aset
+   - Tipe: aset, inventaris, keduanya, atau lainnya
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. **Barang** (`/admin/barang`)
+   - Manajemen data barang inventaris
+   - CRUD lengkap dengan formulir dan tabel
+   - Kode barang otomatis
+   - Menampilkan level stok saat ini
 
-## Security Vulnerabilities
+3. **Aset Tetap** (`/admin/aset-tetap`)
+   - Manajemen aset tetap perusahaan
+   - Pelacakan detail pembelian dan kondisi
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Sirkulasi Barang
+4. **Barang Masuk** (`/admin/barang-masuk`)
+   - Pencatatan barang masuk
+   - Filter menampilkan hanya transaksi tipe 'in'
 
-## License
+5. **Barang Keluar** (`/admin/barang-keluar`)
+   - Pencatatan barang keluar
+   - Filter menampilkan hanya transaksi tipe 'out'
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Manajemen Pengguna
+6. **Akun Pengguna** (`/admin/akun-pengguna`)
+   - Manajemen akun pengguna
+   - Integrasi dengan role-based permissions
+
+## Instalasi
+
+1. Clone repository
+```bash
+git clone <repository-url>
+cd barang
+```
+
+2. Install dependencies
+```bash
+composer install
+npm install
+```
+
+3. Setup environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+4. Configure database di `.env`
+```
+DB_DATABASE=barang
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+5. Run migration & seeder
+```bash
+php artisan migrate --seed
+```
+
+6. Build assets
+```bash
+npm run build
+```
+
+7. Start development server
+```bash
+php artisan serve
+```
+
+## Penggunaan
+
+### Login
+Akses aplikasi di `/admin` dan gunakan kredensial dari seeder.
+
+### Menambah Barang
+1. Buka menu **Barang** di sidebar
+2. Klik tombol **Tambah**
+3. Isi nama barang, pilih kategori dan satuan
+4. Kode barang akan digenerate otomatis
+
+### Mencatat Barang Masuk
+1. Buka menu **Barang Masuk**
+2. Klik **Tambah Barang Masuk**
+3. Pilih tanggal, sumber, dan catatan
+4. Tambah item dan jumlahnya
+5. Upload lampiran jika diperlukan
+6. Stok barang akan diperbarui otomatis
+
+### Mencatat Barang Keluar
+1. Buka menu **Barang Keluar**
+2. Klik **Tambah Barang Keluar**
+3. Pilih tanggal, tujuan, dan catatan
+4. Tambah item dan jumlahnya
+5. Upload lampiran jika diperlukan
+6. Stok barang akan berkurang otomatis
+
+## Observers
+
+Aplikasi menggunakan observers untuk automasi bisnis:
+
+### StockMovementItemObserver
+- Menyesuaikan stok barang saat item transaksi dibuat
+- Menyesuaikan stok saat item transaksi diubah
+- Menyesuaikan stok saat item transaksi dihapus
+- Mencegah stok negatif
+- Menggunakan quiet updates untuk menghindari loop observer
+
+### StockMovementObserver
+- Membersihkan data saat header transaksi dihapus
+- Menangani logika bisnis kustom
+
+## Kontribusi
+
+1. Fork repository
+2. Buat branch fitur (`git checkout -b feature/AmazingFeature`)
+3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
+4. Push ke branch (`git push origin feature/AmazingFeature`)
+5. Buka Pull Request
+
+## Lisensi
+
+Aplikasi ini adalah software proprietary. Hak cipta dilindungi undang-undang.
+
+## Dukungan
+
+Untuk pertanyaan dan dukungan, hubungi tim pengembang.

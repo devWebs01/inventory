@@ -29,7 +29,6 @@ class StockMovementSeeder extends Seeder
 
         $movements = [
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(30)->format('Y-m-d'),
                 'type' => 'in',
                 'source' => 'PT. Semen Indonesia',
@@ -37,7 +36,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(25)->format('Y-m-d'),
                 'type' => 'in',
                 'source' => 'PT. Beton Jaya',
@@ -45,7 +43,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(20)->format('Y-m-d'),
                 'type' => 'in',
                 'source' => 'PT. Krakatau Steel',
@@ -53,7 +50,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(18)->format('Y-m-d'),
                 'type' => 'in',
                 'source' => 'TB. Maju Jaya',
@@ -61,7 +57,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(15)->format('Y-m-d'),
                 'type' => 'out',
                 'source' => 'Proyek Gedung A',
@@ -69,7 +64,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(12)->format('Y-m-d'),
                 'type' => 'out',
                 'source' => 'Proyek Rumah Bapak Ahmad',
@@ -77,7 +71,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(10)->format('Y-m-d'),
                 'type' => 'in',
                 'source' => 'PT. Cat Dulux',
@@ -85,7 +78,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(8)->format('Y-m-d'),
                 'type' => 'in',
                 'source' => 'Gudang Pusat',
@@ -93,7 +85,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(5)->format('Y-m-d'),
                 'type' => 'out',
                 'source' => 'Proyek Ruko C',
@@ -101,7 +92,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(3)->format('Y-m-d'),
                 'type' => 'out',
                 'source' => 'Proyek Renovasi Kantor',
@@ -109,7 +99,6 @@ class StockMovementSeeder extends Seeder
                 'created_by' => $user?->id,
             ],
             [
-                'code' => 'TRX-'.strtoupper(Str::random(8)),
                 'movement_date' => now()->subDays(1)->format('Y-m-d'),
                 'type' => 'in',
                 'source' => 'PT. Keramik Indonesia',
@@ -127,7 +116,6 @@ class StockMovementSeeder extends Seeder
             Storage::disk('public')->put($filePath, $imageContents);
 
             StockMovement::create([
-                'code' => $movementData['code'],
                 'movement_date' => $movementData['movement_date'],
                 'type' => $movementData['type'],
                 'source' => $movementData['source'],

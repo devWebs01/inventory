@@ -5,29 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
 
 class Item extends Model
 {
     protected $fillable = [
-        'code',
         'name',
         'stock',
         'unit_id',
         'category_id',
         'description',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($item) {
-            if (empty($item->code)) {
-                $item->code = 'ITM-'.strtoupper(Str::random(8));
-            }
-        });
-    }
 
     public function unit(): BelongsTo
     {

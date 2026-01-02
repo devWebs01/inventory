@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\StockOuts\Schemas;
 
-use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
@@ -11,7 +10,6 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Str;
 
 class StockOutForm
 {
@@ -22,24 +20,6 @@ class StockOutForm
                 Section::make('Informasi Transaksi')
                     ->description('Kelola detail transaksi barang keluar')
                     ->schema([
-                        TextInput::make('code')
-                            ->label('Kode Transaksi')
-                            ->placeholder('Klik untuk generate')
-                            ->suffixAction(
-                                Action::make('generate')
-                                    ->icon('heroicon-m-arrow-path')
-                                    ->label('Generate')
-                                    ->action(
-                                        fn ($set) => $set('code', 'OUT-'.strtoupper(Str::random(8)))
-                                    )
-                            )
-                            ->required()
-                            ->default(fn () => 'OUT-'.strtoupper(Str::random(8)))
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(255)
-                            ->autocomplete(false)
-                            ->disabled()
-                            ->dehydrated(),
                         DatePicker::make('movement_date')
                             ->label('Tanggal Transaksi')
                             ->required()

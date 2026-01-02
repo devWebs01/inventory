@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();            // Nomor transaksi
             $table->date('movement_date');               // Tanggal transaksi
 
             $table->enum('type', ['in', 'out']);         // Masuk / Keluar

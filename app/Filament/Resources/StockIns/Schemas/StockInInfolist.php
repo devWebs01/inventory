@@ -17,8 +17,6 @@ class StockInInfolist
                 Section::make('Detail Transaksi')
                     ->description('Informasi lengkap tentang transaksi barang masuk')
                     ->schema([
-                        TextEntry::make('code')
-                            ->label('Kode Transaksi'),
                         TextEntry::make('movement_date')
                             ->label('Tanggal Transaksi')
                             ->date('d M Y'),
