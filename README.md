@@ -229,7 +229,7 @@ flowchart TD
 | Export Data | Export data ke Excel/PDF | Admin, Manager |
 
 ## Class Diagram
-
+```mermaid
 classDiagram
     %% Tables
     class User {
@@ -309,7 +309,7 @@ classDiagram
     Unit "1" -- "N" Item : measures
     StockMovement "1" -- "N" StockMovementItem : contains
     Item "1" -- "N" StockMovementItem : tracked_in
-
+```
 
 ## Resource Filament
 
