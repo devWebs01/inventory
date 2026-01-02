@@ -72,8 +72,9 @@ erDiagram
         string email
         timestamp email_verified_at
         string password
-        remember_token
-        timestamps
+        string remember_token
+        datetime created_at
+        datetime updated_at
     }
 
     %% Category Table
@@ -81,14 +82,16 @@ erDiagram
         bigint id PK
         string name
         string type "asset, inventory, both, other"
-        timestamps
+        datetime created_at
+        datetime updated_at
     }
 
     %% Unit Table
     Unit {
         bigint id PK
         string name
-        timestamps
+        datetime created_at
+        datetime updated_at
     }
 
     %% Item Table
@@ -99,7 +102,8 @@ erDiagram
         bigint unit_id FK
         bigint category_id FK
         text description
-        timestamps
+        datetime created_at
+        datetime updated_at
     }
 
     %% Asset Table
@@ -111,7 +115,8 @@ erDiagram
         date purchase_date
         string condition
         text notes
-        timestamps
+        datetime created_at
+        datetime updated_at
     }
 
     %% StockMovement Table
@@ -123,7 +128,8 @@ erDiagram
         text notes
         bigint created_by FK
         json attachments
-        timestamps
+        datetime created_at
+        datetime updated_at
     }
 
     %% StockMovementItem Table
@@ -132,7 +138,8 @@ erDiagram
         bigint stock_movement_id FK
         bigint item_id FK
         decimal quantity
-        timestamps
+        datetime created_at
+        datetime updated_at
     }
 ```
 
