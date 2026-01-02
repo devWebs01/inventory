@@ -217,7 +217,6 @@ flowchart TD
 |----------|-----------|-------|
 | Login | Masuk ke sistem dengan kredensial | Admin, Staff, Manager |
 | Kelola Kategori | CRUD kategori barang dan aset | Admin |
-| Kelola Satuan | CRUD satuan ukuran | Admin |
 | Kelola Barang | CRUD data barang inventaris | Admin |
 | Kelola Aset | CRUD data aset tetap | Admin |
 | Catat Barang Masuk | Mencatat transaksi barang masuk | Admin, Staff |
@@ -231,238 +230,86 @@ flowchart TD
 
 ## Class Diagram
 
-```mermaid
 classDiagram
-    %% Models
+    %% Tables
     class User {
         +bigint id
-        +string name
-        +string email
-        +string password
+        +string(255) name
+        +string(255) email
         +timestamp email_verified_at
-        +string remember_token
-        +timestamps()
-        +stockMovements() HasMany
+        +string(255) password
+        +string(100) remember_token
+        +timestamp created_at
+        +timestamp updated_at
     }
 
     class Category {
         +bigint id
-        +string name
-        +string type
-        +timestamps()
-        +items() HasMany
-        +assets() HasMany
+        +string(255) name
+        +enum('asset','inventory','both','other') type
+        +timestamp created_at
+        +timestamp updated_at
     }
 
     class Unit {
         +bigint id
-        +string name
-        +timestamps()
-        +items() HasMany
+        +string(255) name
+        +timestamp created_at
+        +timestamp updated_at
     }
 
     class Item {
-        +string name
-        +string stock
+        +bigint id
+        +string(255) name
+        +string(255) stock
         +bigint unit_id
         +bigint category_id
         +text description
-        +timestamps()
-        +unit() BelongsTo
-        +category() BelongsTo
-        +stockMovementItems() HasMany
+        +timestamp created_at
+        +timestamp updated_at
     }
 
     class Asset {
         +bigint id
-        +string name
+        +string(255) name
         +bigint category_id
-        +decimal purchase_price
+        +decimal(15,2) purchase_price
         +date purchase_date
-        +string condition
+        +string(255) condition
         +text notes
-        +timestamps()
-        +casts() array
-        +category() BelongsTo
+        +timestamp created_at
+        +timestamp updated_at
     }
 
     class StockMovement {
+        +bigint id
         +date movement_date
-        +string type
-        +string source
+        +enum('in','out') type
+        +string(255) source
+        +string(255) attachments
         +text notes
         +bigint created_by
-        +json attachments
-        +timestamps()
-        +casts() array
-        +createdBy() BelongsTo
-        +items() HasMany
+        +timestamp created_at
+        +timestamp updated_at
     }
 
     class StockMovementItem {
+        +bigint id
         +bigint stock_movement_id
         +bigint item_id
-        +decimal quantity
-        +timestamps()
-        +stockMovement() BelongsTo
-        +item() BelongsTo
-    }
-
-    %% Observers
-    class StockMovementItemObserver {
-        +created(StockMovementItem) void
-        +updated(StockMovementItem) void
-        +deleted(StockMovementItem) void
-        -updateStock(StockMovementItem, string) void
-        -handleUpdate(StockMovementItem, Item) void
-        -adjustStock(Item, decimal, string, bool) void
-    }
-
-    class StockMovementObserver {
-        +deleted(StockMovement) void
-    }
-
-    %% Widgets
-    class StatsOverview {
-        +getColumns() int
-        +getStats() array
-    }
-
-    class LowStockAlertWidget {
-        +getColumns() int
-        +getStats() array
-    }
-
-    class AssetStatsOverviewWidget {
-        +table(Table) Table
-    }
-
-    class RecentStockMovements {
-        +table(Table) Table
-    }
-
-    %% Filament Resources
-    class CategoryResource {
-        +form(Schema) Schema
-        +table(Table) Table
-    }
-
-    class ItemResource {
-        +form(Schema) Schema
-        +table(Table) Table
-        +infolist(Infolist) Infolist
-    }
-
-    class AssetResource {
-        +form(Schema) Schema
-        +table(Table) Table
-        +infolist(Infolist) Infolist
-    }
-
-    class StockInResource {
-        +form(Schema) Schema
-        +table(Table) Table
-        +infolist(Infolist) Infolist
-    }
-
-    class StockOutResource {
-        +form(Schema) Schema
-        +table(Table) Table
-        +infolist(Infolist) Infolist
-    }
-
-    class UserResource {
-        +form(Schema) Schema
-        +table(Table) Table
-    }
-
-    %% Policies
-    class AssetPolicy {
-        +viewAny(User) bool
-        +view(User, Asset) bool
-        +create(User) bool
-        +update(User, Asset) bool
-        +delete(User, Asset) bool
-    }
-
-    class ItemPolicy {
-        +viewAny(User) bool
-        +view(User, Item) bool
-        +create(User) bool
-        +update(User, Item) bool
-        +delete(User, Item) bool
-    }
-
-    class StockMovementPolicy {
-        +viewAny(User) bool
-        +view(User, StockMovement) bool
-        +create(User) bool
-        +update(User, StockMovement) bool
-        +delete(User, StockMovement) bool
-    }
-
-    class CategoryPolicy {
-        +viewAny(User) bool
-        +view(User, Category) bool
-        +create(User) bool
-        +update(User, Category) bool
-        +delete(User, Category) bool
-    }
-
-    class UserPolicy {
-        +viewAny(User) bool
-        +view(User, User) bool
-        +create(User) bool
-        +update(User, User) bool
-        +delete(User, User) bool
+        +string(255) quantity
+        +timestamp created_at
+        +timestamp updated_at
     }
 
     %% Relationships
-    User "1" --> "*" StockMovement : creates
-    Category "1" --> "*" Item : categorizes
-    Category "1" --> "*" Asset : categorizes
-    Unit "1" --> "*" Item : measures
-    StockMovement "1" --> "*" StockMovementItem : contains
-    Item "1" --> "*" StockMovementItem : tracked in
-    StockMovementItemObserver ..> StockMovementItem : observes
-    StockMovementObserver ..> StockMovement : observes
+    User "1" -- "N" StockMovement : creates
+    Category "1" -- "N" Item : categorizes
+    Category "1" -- "N" Asset : categorizes
+    Unit "1" -- "N" Item : measures
+    StockMovement "1" -- "N" StockMovementItem : contains
+    Item "1" -- "N" StockMovementItem : tracked_in
 
-    %% Styling
-    classDef modelStyle fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    classDef observerStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    classDef widgetStyle fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef resourceStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    classDef policyStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px
-
-    class User:::modelStyle
-    class Category:::modelStyle
-    class Unit:::modelStyle
-    class Item:::modelStyle
-    class Asset:::modelStyle
-    class StockMovement:::modelStyle
-    class StockMovementItem:::modelStyle
-    
-    class StockMovementItemObserver:::observerStyle
-    class StockMovementObserver:::observerStyle
-    
-    class StatsOverview:::widgetStyle
-    class LowStockAlertWidget:::widgetStyle
-    class AssetStatsOverviewWidget:::widgetStyle
-    class RecentStockMovements:::widgetStyle
-    
-    class CategoryResource:::resourceStyle
-    class ItemResource:::resourceStyle
-    class AssetResource:::resourceStyle
-    class StockInResource:::resourceStyle
-    class StockOutResource:::resourceStyle
-    class UserResource:::resourceStyle
-    
-    class AssetPolicy:::policyStyle
-    class ItemPolicy:::policyStyle
-    class StockMovementPolicy:::policyStyle
-    class CategoryPolicy:::policyStyle
-    class UserPolicy:::policyStyle
-```
 
 ## Resource Filament
 
