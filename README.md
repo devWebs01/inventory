@@ -51,7 +51,92 @@ Aplikasi manajemen inventaris dan aset tetap yang komprehensif, dibangun dengan 
 - `stock_movements` - Header transaksi barang masuk/keluar
 - `stock_movement_items` - Detail item dalam setiap transaksi
 
-#### Relasi
+### Entity Relationship Diagram (ERD)
+
+```mermaid
+erDiagram
+    %% Master Data Tables
+    User ||--o{ StockMovement : creates
+    Category ||--o{ Item : categorizes
+    Category ||--o{ Asset : categorizes
+    Unit ||--o{ Item : measures
+
+    %% Transaction Tables
+    StockMovement ||--o{ StockMovementItem : contains
+    Item ||--o{ StockMovementItem : "tracked in"
+
+    %% User Table
+    User {
+        bigint id PK
+        string name
+        string email
+        timestamp email_verified_at
+        string password
+        remember_token
+        timestamps
+    }
+
+    %% Category Table
+    Category {
+        bigint id PK
+        string name
+        enum type[asset, inventory, both, other]
+        timestamps
+    }
+
+    %% Unit Table
+    Unit {
+        bigint id PK
+        string name
+        timestamps
+    }
+
+    %% Item Table
+    Item {
+        bigint id PK
+        string name UK
+        string stock
+        bigint unit_id FK
+        bigint category_id FK
+        text description
+        timestamps
+    }
+
+    %% Asset Table
+    Asset {
+        bigint id PK
+        string name
+        bigint category_id FK
+        decimal purchase_price
+        date purchase_date
+        string condition
+        text notes
+        timestamps
+    }
+
+    %% StockMovement Table
+    StockMovement {
+        bigint id PK
+        date movement_date
+        enum type[in, out]
+        string source
+        text notes
+        bigint created_by FK
+        json attachments
+        timestamps
+    }
+
+    %% StockMovementItem Table
+    StockMovementItem {
+        bigint id PK
+        bigint stock_movement_id FK
+        bigint item_id FK
+        decimal quantity
+        timestamps
+    }
+```
+
+### Relasi
 ```
 Category (1) → (N) Item
 Category (1) → (N) Asset
