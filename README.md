@@ -38,18 +38,98 @@ Aplikasi manajemen inventaris dan aset tetap yang komprehensif, dibangun dengan 
 
 ## Struktur Database
 
-### Tabel Utama
+### Detail Tabel
 
-#### Master Data
-- `users` - Pengguna aplikasi
-- `categories` - Kategori barang dan aset
-- `units` - Satuan ukuran barang
-- `items` - Data barang/inventaris
-- `assets` - Data aset tetap
+#### 1. users
+Tabel ini menyimpan data pengguna aplikasi.
 
-#### Transaksi
-- `stock_movements` - Header transaksi barang masuk/keluar
-- `stock_movement_items` - Detail item dalam setiap transaksi
+| Field | Tipe Data | Panjang | Relasi | Keterangan |
+|---|---|---|---|---|
+| id (PK) | bigint | 20 | - | Primary Key |
+| name | string | 255 | - | Nama lengkap pengguna |
+| email | string | 255 | - | Alamat email (Unique) |
+| email_verified_at | timestamp | - | - | Waktu verifikasi email |
+| password | string | 255 | - | Password terenkripsi |
+| remember_token | string | 100 | - | Token "Remember Me" |
+| created_at | timestamp | - | - | Waktu pembuatan data |
+| updated_at | timestamp | - | - | Waktu pembaruan data |
+
+#### 2. categories
+Tabel ini mengelompokkan barang dan aset.
+
+| Field | Tipe Data | Panjang | Relasi | Keterangan |
+|---|---|---|---|---|
+| id (PK) | bigint | 20 | - | Primary Key |
+| name | string | 255 | - | Nama kategori |
+| type | enum | - | - | Tipe kategori ('asset', 'inventory', 'both', 'other') |
+| created_at | timestamp | - | - | Waktu pembuatan data |
+| updated_at | timestamp | - | - | Waktu pembaruan data |
+
+#### 3. units
+Tabel ini menyimpan satuan ukuran untuk barang.
+
+| Field | Tipe Data | Panjang | Relasi | Keterangan |
+|---|---|---|---|---|
+| id (PK) | bigint | 20 | - | Primary Key |
+| name | string | 255 | - | Nama satuan (misal: pcs, kg) |
+| created_at | timestamp | - | - | Waktu pembuatan data |
+| updated_at | timestamp | - | - | Waktu pembaruan data |
+
+#### 4. items
+Tabel ini menyimpan data master barang inventaris.
+
+| Field | Tipe Data | Panjang | Relasi | Keterangan |
+|---|---|---|---|---|
+| id (PK) | bigint | 20 | - | Primary Key |
+| name | string | 255 | - | Nama barang |
+| stock | string | 255 | - | Jumlah stok saat ini |
+| unit_id (FK) | bigint | 20 | units.id | ID Satuan barang |
+| category_id (FK) | bigint | 20 | categories.id | ID Kategori barang |
+| description | text | - | - | Deskripsi tambahan |
+| created_at | timestamp | - | - | Waktu pembuatan data |
+| updated_at | timestamp | - | - | Waktu pembaruan data |
+
+#### 5. assets
+Tabel ini menyimpan data aset tetap perusahaan.
+
+| Field | Tipe Data | Panjang | Relasi | Keterangan |
+|---|---|---|---|---|
+| id (PK) | bigint | 20 | - | Primary Key |
+| name | string | 255 | - | Nama aset |
+| category_id (FK) | bigint | 20 | categories.id | ID Kategori aset |
+| purchase_price | decimal | 15,2 | - | Harga pembelian |
+| purchase_date | date | - | - | Tanggal pembelian |
+| condition | string | 255 | - | Kondisi aset |
+| notes | text | - | - | Catatan tambahan |
+| created_at | timestamp | - | - | Waktu pembuatan data |
+| updated_at | timestamp | - | - | Waktu pembaruan data |
+
+#### 6. stock_movements
+Tabel header untuk transaksi keluar masuk barang.
+
+| Field | Tipe Data | Panjang | Relasi | Keterangan |
+|---|---|---|---|---|
+| id (PK) | bigint | 20 | - | Primary Key |
+| movement_date | date | - | - | Tanggal transaksi |
+| type | enum | - | - | Tipe transaksi ('in', 'out') |
+| source | string | 255 | - | Sumber/Tujuan barang |
+| attachments | string | 255 | - | Path file lampiran |
+| notes | text | - | - | Catatan transaksi |
+| created_by (FK) | bigint | 20 | users.id | User yang membuat transaksi |
+| created_at | timestamp | - | - | Waktu pembuatan data |
+| updated_at | timestamp | - | - | Waktu pembaruan data |
+
+#### 7. stock_movement_items
+Tabel detail item dalam setiap transaksi stok.
+
+| Field | Tipe Data | Panjang | Relasi | Keterangan |
+|---|---|---|---|---|
+| id (PK) | bigint | 20 | - | Primary Key |
+| stock_movement_id (FK) | bigint | 20 | stock_movements.id | ID Header transaksi |
+| item_id (FK) | bigint | 20 | items.id | ID Barang |
+| quantity | string | 255 | - | Jumlah barang dalam transaksi |
+| created_at | timestamp | - | - | Waktu pembuatan data |
+| updated_at | timestamp | - | - | Waktu pembaruan data |
 
 ### Entity Relationship Diagram (ERD)
 
