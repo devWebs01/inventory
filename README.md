@@ -6,7 +6,7 @@ Aplikasi manajemen inventaris dan aset tetap yang komprehensif, dibangun dengan 
 
 ### Manajemen Inventaris
 - **Pelacakan Stok Real-time**: Stok barang diperbarui secara otomatis saat terjadi transaksi
-- **Kode Barang Otomatis**: Setiap barang mendapatkan kode unik dengan format ITM-XXXXXXX
+- **Identifikasi Unik**: Setiap barang diidentifikasi dengan nama yang unik
 - **Kategori Fleksibel**: Dukungan kategori bertipe aset, inventaris, keduanya, atau lainnya
 - **Multi-Satuan**: Dukungan berbagai satuan ukuran (pcs, kg, meter, dll)
 - **Validasi Stok**: Mencegah stok negatif dengan validasi otomatis
@@ -71,7 +71,6 @@ Item (1) → (N) StockMovementItem
 2. **Barang** (`/admin/barang`)
    - Manajemen data barang inventaris
    - CRUD lengkap dengan formulir dan tabel
-   - Kode barang otomatis
    - Menampilkan level stok saat ini
 
 3. **Aset Tetap** (`/admin/aset-tetap`)
@@ -143,7 +142,7 @@ Akses aplikasi di `/admin` dan gunakan kredensial dari seeder.
 1. Buka menu **Barang** di sidebar
 2. Klik tombol **Tambah**
 3. Isi nama barang, pilih kategori dan satuan
-4. Kode barang akan digenerate otomatis
+4. Stok awal dapat diisi langsung
 
 ### Mencatat Barang Masuk
 1. Buka menu **Barang Masuk**
