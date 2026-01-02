@@ -3,6 +3,9 @@
 namespace App\Providers\Filament;
 
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
+use Caresome\FilamentAuthDesigner\Data\AuthPageConfig;
+use Caresome\FilamentAuthDesigner\Enums\MediaPosition;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -19,9 +22,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
-use Caresome\FilamentAuthDesigner\Data\AuthPageConfig;
-use Caresome\FilamentAuthDesigner\Enums\MediaPosition;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -62,12 +62,12 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make()
                     ->navigationLabel('Hak Akses')
                     ->navigationGroup('Pengguna'),
-                      AuthDesignerPlugin::make()
-                ->login(fn (AuthPageConfig $config) => $config
-                    ->media(url('https://images.pexels.com/photos/544965/pexels-photo-544965.jpeg'))
-                    ->mediaPosition(MediaPosition::Left)
-                    ->mediaSize('40%')
-                )
+                AuthDesignerPlugin::make()
+                    ->login(fn (AuthPageConfig $config) => $config
+                        ->media(url('https://images.pexels.com/photos/544965/pexels-photo-544965.jpeg'))
+                        ->mediaPosition(MediaPosition::Left)
+                        ->mediaSize('40%')
+                    ),
             ])
             ->authMiddleware([
                 Authenticate::class,

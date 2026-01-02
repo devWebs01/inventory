@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ItemSeeder::class,
             StockMovementSeeder::class,
             StockMovementItemSeeder::class,
+            AssetSeeder::class,
         ]);
     }
 }
