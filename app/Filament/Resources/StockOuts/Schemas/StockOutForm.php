@@ -94,13 +94,6 @@ class StockOutForm
                                     ->required()
                                     ->reactive()
                                     ->createOptionForm([
-                                        TextInput::make('code')
-                                            ->label('Kode Barang')
-                                            ->default(fn () => 'ITM-'.strtoupper(Str::random(8)))
-                                            ->required()
-                                            ->unique(ignoreRecord: true)
-                                            ->disabled(),
-
                                         TextInput::make('name')
                                             ->label('Nama Barang')
                                             ->required()

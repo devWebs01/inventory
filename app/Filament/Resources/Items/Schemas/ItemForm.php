@@ -2,14 +2,13 @@
 
 namespace App\Filament\Resources\Items\Schemas;
 
+use App\Models\Category;
 use App\Models\Unit;
-use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Str;
 
 class ItemForm
 {
@@ -20,22 +19,6 @@ class ItemForm
                 Section::make('Informasi Barang')
                     ->description('Kelola data barang atau persediaan')
                     ->schema([
-                        TextInput::make('code')
-                            ->label('Kode Barang')
-                            ->placeholder('Klik untuk generate')
-                            ->suffixAction(
-                                Action::make('generate')
-                                    ->icon('heroicon-m-arrow-path')
-                                    ->label('Generate')
-                                    ->action(
-                                        fn ($set) => $set('code', 'ITM-'.strtoupper(Str::random(8)))
-                                    )
-                            )
-                            ->required()
-                            ->default(fn () => 'ITM-'.strtoupper(Str::random(8)))
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(255)
-                            ->autocomplete(false),
                         TextInput::make('name')
                             ->label('Nama Barang')
                             ->placeholder('Contoh: Semen Portland 50kg')
@@ -45,11 +28,27 @@ class ItemForm
                             ->columnSpanFull(),
                         Select::make('category_id')
                             ->label('Kategori')
-                            ->relationship('category', 'name')
+                            ->options(
+                                Category::query()
+                                    ->whereIn('type', ['inventory', 'both'])
+                                    ->get()
+                                    ->mapWithKeys(function ($category) {
+                                        $color = match ($category->type) {
+                                            'inventory' => '#10b981',
+                                            'both' => '#8b5cf6',
+                                            default => '#6b7280',
+                                        };
+
+                                        return [
+                                            $category->id => "{$category->name} <span style=\"color:{$color};font-weight:bold;font-size:0.75em\">[".self::getTypeLabel($category->type).']</span>',
+                                        ];
+                                    })
+                                    ->toArray()
+                            )
                             ->placeholder('Pilih kategori')
                             ->required()
+                            ->allowHtml()
                             ->searchable()
-                            ->preload()
                             ->createOptionForm([
                                 TextInput::make('name')
                                     ->label('Nama Kategori')
@@ -64,8 +63,9 @@ class ItemForm
                                         'other' => 'Lainnya',
                                     ])
                                     ->required()
-                                    ->default('asset'),
-                            ]),
+                                    ->default('inventory'),
+                            ])
+                            ->columnSpanFull(),
                         TextInput::make('stock')
                             ->label('Stok Saat Ini')
                             ->placeholder('0')
@@ -93,8 +93,19 @@ class ItemForm
                             ->columnSpanFull(),
 
                     ])
-                    ->columns(3)
+                    ->columns(2)
                     ->columnSpanFull(),
             ]);
+    }
+
+    private static function getTypeLabel(string $type): string
+    {
+        return match ($type) {
+            'asset' => 'Aset',
+            'inventory' => 'Barang / Persediaan',
+            'both' => 'Aset & Barang',
+            'other' => 'Lainnya',
+            default => $type,
+        };
     }
 }

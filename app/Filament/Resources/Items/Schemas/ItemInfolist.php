@@ -15,8 +15,6 @@ class ItemInfolist
                 Section::make('Detail Barang')
                     ->description('Informasi lengkap tentang barang')
                     ->schema([
-                        TextEntry::make('code')
-                            ->label('Kode Barang'),
                         TextEntry::make('name')
                             ->label('Nama Barang')
                             ->columnSpanFull(),
@@ -43,7 +41,8 @@ class ItemInfolist
                             ->dateTime('d M Y H:i')
                             ->placeholder('-'),
                     ])
-                    ->columns(3),
+                    ->columns(3)
+                    ->columnSpanFull(),
             ]);
     }
 }

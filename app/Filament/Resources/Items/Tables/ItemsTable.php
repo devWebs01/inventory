@@ -19,10 +19,6 @@ class ItemsTable
     {
         return $table
             ->columns([
-                TextColumn::make('code')
-                    ->label('Kode')
-                    ->searchable()
-                    ->toggleable(),
                 TextColumn::make('name')
                     ->label('Nama Barang')
                     ->searchable()
