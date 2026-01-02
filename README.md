@@ -80,7 +80,7 @@ erDiagram
     Category {
         bigint id PK
         string name
-        enum type[asset, inventory, both, other]
+        string type "asset, inventory, both, other"
         timestamps
     }
 
@@ -118,7 +118,7 @@ erDiagram
     StockMovement {
         bigint id PK
         date movement_date
-        enum type[in, out]
+        string type "in, out"
         string source
         text notes
         bigint created_by FK
@@ -427,11 +427,34 @@ classDiagram
     classDef resourceStyle fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
     classDef policyStyle fill:#fce4ec,stroke:#c2185b,stroke-width:2px
 
-    class User,Category,Unit,Item,Asset,StockMovement,StockMovementItem modelStyle
-    class StockMovementItemObserver,StockMovementObserver observerStyle
-    class StatsOverview,LowStockAlertWidget,AssetStatsOverviewWidget,RecentStockMovements widgetStyle
-    class CategoryResource,ItemResource,AssetResource,StockInResource,StockOutResource,UserResource resourceStyle
-    class AssetPolicy,ItemPolicy,StockMovementPolicy,CategoryPolicy,UserPolicy policyStyle
+    class User:::modelStyle
+    class Category:::modelStyle
+    class Unit:::modelStyle
+    class Item:::modelStyle
+    class Asset:::modelStyle
+    class StockMovement:::modelStyle
+    class StockMovementItem:::modelStyle
+    
+    class StockMovementItemObserver:::observerStyle
+    class StockMovementObserver:::observerStyle
+    
+    class StatsOverview:::widgetStyle
+    class LowStockAlertWidget:::widgetStyle
+    class AssetStatsOverviewWidget:::widgetStyle
+    class RecentStockMovements:::widgetStyle
+    
+    class CategoryResource:::resourceStyle
+    class ItemResource:::resourceStyle
+    class AssetResource:::resourceStyle
+    class StockInResource:::resourceStyle
+    class StockOutResource:::resourceStyle
+    class UserResource:::resourceStyle
+    
+    class AssetPolicy:::policyStyle
+    class ItemPolicy:::policyStyle
+    class StockMovementPolicy:::policyStyle
+    class CategoryPolicy:::policyStyle
+    class UserPolicy:::policyStyle
 ```
 
 ## Resource Filament
