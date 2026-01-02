@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Items\Schemas;
 
-use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -34,9 +33,7 @@ class ItemInfolist
                             ->label('Deskripsi')
                             ->placeholder('Tidak ada deskripsi')
                             ->columnSpanFull(),
-                        IconEntry::make('is_active')
-                            ->label('Status Aktif')
-                            ->boolean(),
+
                         TextEntry::make('created_at')
                             ->label('Dibuat Pada')
                             ->dateTime('d M Y H:i')

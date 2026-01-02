@@ -8,7 +8,6 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -42,10 +41,7 @@ class ItemsTable
                     ->label('Satuan')
                     ->sortable()
                     ->toggleable(),
-                IconColumn::make('is_active')
-                    ->label('Aktif')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('created_at')
                     ->label('Dibuat Pada')
                     ->dateTime('d M Y H:i')
@@ -64,12 +60,6 @@ class ItemsTable
                 SelectFilter::make('unit')
                     ->label('Satuan')
                     ->relationship('unit', 'name'),
-                TernaryFilter::make('is_active')
-                    ->label('Status Aktif')
-                    ->placeholder('Semua')
-                    ->trueLabel('Aktif')
-                    ->falseLabel('Tidak Aktif')
-                    ->nullable(),
                 TernaryFilter::make('stock')
                     ->label('Ketersediaan Stok')
                     ->placeholder('Semua')

@@ -15,15 +15,7 @@ class Item extends Model
         'unit_id',
         'category_id',
         'description',
-        'is_active',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_active' => 'boolean',
-        ];
-    }
 
     public function unit(): BelongsTo
     {

@@ -7,7 +7,6 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -92,10 +91,7 @@ class ItemForm
                             ->placeholder('Keterangan tambahan tentang barang...')
                             ->rows(3)
                             ->columnSpanFull(),
-                        Toggle::make('is_active')
-                            ->label('Status Aktif')
-                            ->default(true)
-                            ->inline(false),
+
                     ])
                     ->columns(3)
                     ->columnSpanFull(),

@@ -23,7 +23,6 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->text('description')->nullable();    // Keterangan tambahan
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
