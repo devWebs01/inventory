@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ItemResource extends Resource
 {
@@ -45,6 +46,11 @@ class ItemResource extends Resource
     public static function table(Table $table): Table
     {
         return ItemsTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->latest();
     }
 
     public static function getRelations(): array

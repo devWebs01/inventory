@@ -26,12 +26,6 @@ class AssetsTable
                     ->label('Kategori')
                     ->sortable()
                     ->toggleable(),
-                TextColumn::make('purchase_price')
-                    ->label('Harga Perolehan')
-                    ->money('idr')
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(),
                 TextColumn::make('purchase_date')
                     ->label('Tanggal Perolehan')
                     ->date('d M Y')

@@ -21,10 +21,6 @@ class StockOutsTable
                     ->label('Tanggal')
                     ->date('d M Y')
                     ->sortable(),
-                TextColumn::make('source')
-                    ->label('Tujuan')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('createdBy.name')
                     ->label('Dibuat Oleh')
                     ->sortable()

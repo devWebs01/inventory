@@ -25,13 +25,13 @@ class StockOutForm
                             ->required()
                             ->native(false)
                             ->default(now())
-                            ->closeOnDateSelection(),
-                        TextInput::make('source')
-                            ->label('Tujuan/Proyek')
-                            ->placeholder('Contoh: Proyek A, Gudang B, Lokasi C')
-                            ->maxLength(255)
-                            ->autocomplete(false)
-                            ->required(),
+                            ->closeOnDateSelection()
+                            ->columnSpan(fn () => request()->routeIs('*create') ? 'full' : 1),
+                        Select::make('created_by')
+                            ->label('Dibuat Oleh')
+                            ->relationship('createdBy', 'name')
+                            ->disabled()
+                            ->visibleOn('edit'),
                         Textarea::make('notes')
                             ->label('Catatan')
                             ->placeholder('Catatan tambahan tentang transaksi...')
@@ -44,18 +44,6 @@ class StockOutForm
                             ->openable()
                             ->directory('stock-out-attachments')
                             ->columnSpanFull(),
-                        TextInput::make('type')
-                            ->default('out')
-                            ->hidden()
-                            ->dehydrated(),
-                        Select::make('created_by')
-                            ->label('Dibuat Oleh')
-                            ->relationship('createdBy', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload()
-                            ->default(auth()->id())
-                            ->hidden(),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),
@@ -96,8 +84,7 @@ class StockOutForm
                                         Textarea::make('description')
                                             ->label('Deskripsi')
                                             ->rows(2),
-                                    ])
-                                    ->columnSpanFull(),
+                                    ]),
 
                                 TextInput::make('quantity')
                                     ->label('Jumlah')

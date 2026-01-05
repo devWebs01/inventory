@@ -20,9 +20,6 @@ class StockOutInfolist
                         TextEntry::make('movement_date')
                             ->label('Tanggal Transaksi')
                             ->date('d M Y'),
-                        TextEntry::make('source')
-                            ->label('Tujuan')
-                            ->placeholder('-'),
                         TextEntry::make('notes')
                             ->label('Catatan')
                             ->placeholder('Tidak ada catatan')
@@ -38,7 +35,7 @@ class StockOutInfolist
                             ->dateTime('d M Y H:i')
                             ->placeholder('-'),
                     ])
-                    ->columns(3)
+                    ->columns(2)
                     ->columnSpanFull(),
 
                 Section::make('Daftar Barang')

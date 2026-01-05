@@ -20,16 +20,9 @@ class StockInInfolist
                         TextEntry::make('movement_date')
                             ->label('Tanggal Transaksi')
                             ->date('d M Y'),
-                        TextEntry::make('source')
-                            ->label('Supplier')
-                            ->placeholder('-'),
                         TextEntry::make('notes')
                             ->label('Catatan')
                             ->placeholder('Tidak ada catatan')
-                            ->columnSpanFull(),
-                        ImageEntry::make('attachments')
-                            ->label('Lampiran')
-                            ->visible(fn ($record) => ! empty($record->attachments))
                             ->columnSpanFull(),
                         TextEntry::make('createdBy.name')
                             ->label('Dibuat Oleh'),
@@ -37,8 +30,12 @@ class StockInInfolist
                             ->label('Dibuat Pada')
                             ->dateTime('d M Y H:i')
                             ->placeholder('-'),
+                        ImageEntry::make('attachments')
+                            ->label('Lampiran')
+                            ->visible(fn ($record) => ! empty($record->attachments))
+                            ->columnSpanFull(),
                     ])
-                    ->columns(3)
+                    ->columns(2)
                     ->columnSpanFull(),
 
                 Section::make('Daftar Barang')

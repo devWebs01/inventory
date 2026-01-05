@@ -50,7 +50,7 @@ class StockOutResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('type', 'out');
+        return parent::getEloquentQuery()->where('type', 'out')->latest();
     }
 
     public static function getPages(): array

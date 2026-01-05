@@ -50,7 +50,7 @@ class StockInResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('type', 'in');
+        return parent::getEloquentQuery()->where('type', 'in')->latest();
     }
 
     public static function getPages(): array

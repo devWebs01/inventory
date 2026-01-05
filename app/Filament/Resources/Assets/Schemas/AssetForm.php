@@ -24,8 +24,7 @@ class AssetForm
                             ->placeholder('Contoh: Excavator CAT 320D')
                             ->required()
                             ->maxLength(255)
-                            ->autocomplete(false)
-                            ->columnSpanFull(),
+                            ->autocomplete(false),
                         Select::make('category_id')
                             ->label('Kategori')
                             ->options(
@@ -65,14 +64,6 @@ class AssetForm
                                     ->required()
                                     ->default('asset'),
                             ]),
-                        TextInput::make('purchase_price')
-                            ->label('Harga Perolehan')
-                            ->placeholder('0')
-                            ->required()
-                            ->numeric()
-                            ->prefix('Rp')
-                            ->minValue(0)
-                            ->step(0.01),
                         DatePicker::make('purchase_date')
                             ->label('Tanggal Perolehan')
                             ->placeholder('Pilih tanggal')

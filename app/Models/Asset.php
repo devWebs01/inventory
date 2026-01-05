@@ -19,7 +19,6 @@ class Asset extends Model
     protected $fillable = [
         'name',
         'category_id',
-        'purchase_price',
         'purchase_date',
         'condition',
         'notes',
@@ -33,7 +32,6 @@ class Asset extends Model
     public function casts(): array
     {
         return [
-            'purchase_price' => 'decimal:2',
             'purchase_date' => 'date',
         ];
     }

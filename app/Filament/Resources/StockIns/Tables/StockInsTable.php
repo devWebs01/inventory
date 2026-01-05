@@ -21,10 +21,6 @@ class StockInsTable
                     ->label('Tanggal')
                     ->date('d M Y')
                     ->sortable(),
-                TextColumn::make('source')
-                    ->label('Supplier')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('createdBy.name')
                     ->label('Dibuat Oleh')
                     ->sortable()

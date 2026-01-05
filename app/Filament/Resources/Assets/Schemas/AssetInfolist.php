@@ -20,10 +20,6 @@ class AssetInfolist
                             ->columnSpanFull(),
                         TextEntry::make('category.name')
                             ->label('Kategori'),
-                        TextEntry::make('purchase_price')
-                            ->label('Harga Perolehan')
-                            ->money('idr')
-                            ->numeric(),
                         TextEntry::make('purchase_date')
                             ->label('Tanggal Perolehan')
                             ->date('d M Y')

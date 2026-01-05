@@ -4,6 +4,7 @@ namespace App\Filament\Resources\StockOuts\Pages;
 
 use App\Filament\Resources\StockOuts\StockOutResource;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditStockOut extends EditRecord
@@ -13,6 +14,7 @@ class EditStockOut extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            ViewAction::make(),
             DeleteAction::make(),
         ];
     }

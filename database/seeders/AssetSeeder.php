@@ -23,7 +23,6 @@ class AssetSeeder extends Seeder
             [
                 'name' => 'Excavator CAT 320D',
                 'category_id' => $this->getCategoryId('Alat Berat', $assetCategories),
-                'purchase_price' => 2500000000,
                 'purchase_date' => '2023-01-15',
                 'condition' => 'Baik',
                 'notes' => 'Digunakan untuk proyek penggalian',
@@ -31,7 +30,6 @@ class AssetSeeder extends Seeder
             [
                 'name' => 'Bulldozer Komatsu D65',
                 'category_id' => $this->getCategoryId('Alat Berat', $assetCategories),
-                'purchase_price' => 1800000000,
                 'purchase_date' => '2023-03-20',
                 'condition' => 'Baik',
                 'notes' => 'Unit pengupas tanah',
@@ -39,7 +37,6 @@ class AssetSeeder extends Seeder
             [
                 'name' => 'Toyota Hilux Double Cabin',
                 'category_id' => $this->getCategoryId('Kendaraan Operasional', $assetCategories),
-                'purchase_price' => 550000000,
                 'purchase_date' => '2023-06-10',
                 'condition' => 'Baik',
                 'notes' => 'Kendaraan operasional lapangan',
@@ -47,7 +44,6 @@ class AssetSeeder extends Seeder
             [
                 'name' => 'Mitsubishi Triton',
                 'category_id' => $this->getCategoryId('Kendaraan Operasional', $assetCategories),
-                'purchase_price' => 480000000,
                 'purchase_date' => '2023-07-05',
                 'condition' => 'Rusak Ringan',
                 'notes' => 'Perlu service rutin',
@@ -55,7 +51,6 @@ class AssetSeeder extends Seeder
             [
                 'name' => 'Gedung Kantor Pusat',
                 'category_id' => $this->getCategoryId('Bangunan & Fasilitas', $assetCategories),
-                'purchase_price' => 5000000000,
                 'purchase_date' => '2022-01-01',
                 'condition' => 'Baik',
                 'notes' => 'Bangunan 3 lantai',
@@ -63,7 +58,6 @@ class AssetSeeder extends Seeder
             [
                 'name' => 'Gudang Utama',
                 'category_id' => $this->getCategoryId('Bangunan & Fasilitas', $assetCategories),
-                'purchase_price' => 2500000000,
                 'purchase_date' => '2022-03-15',
                 'condition' => 'Baik',
                 'notes' => 'Luas 1000 m2',
@@ -71,7 +65,6 @@ class AssetSeeder extends Seeder
             [
                 'name' => 'Generator Set 500 KVA',
                 'category_id' => $this->getCategoryId('Peralatan', $assetCategories),
-                'purchase_price' => 750000000,
                 'purchase_date' => '2023-04-20',
                 'condition' => 'Baik',
                 'notes' => 'Gensi utama kantor',
@@ -79,7 +72,6 @@ class AssetSeeder extends Seeder
             [
                 'name' => 'AC Split 2 PK',
                 'category_id' => $this->getCategoryId('Peralatan', $assetCategories),
-                'purchase_price' => 8500000,
                 'purchase_date' => '2023-05-10',
                 'condition' => 'Rusak Ringan',
                 'notes' => 'Perlu cuci freon',

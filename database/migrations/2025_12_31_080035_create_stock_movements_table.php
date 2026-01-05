@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
-            $table->date('movement_date');               // Tanggal transaksi
+            $table->date('movement_date');
 
-            $table->enum('type', ['in', 'out']);         // Masuk / Keluar
+            $table->enum('type', ['in', 'out']);
 
-            $table->string('source')->nullable();        // Supplier / Gudang / Proyek
-            $table->string('attachments')->nullable();        // Supplier / Gudang / Proyek
-            $table->text('notes')->nullable();           // Catatan
-            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();           // Penanggung Jawab
+            $table->string('attachments')->nullable();
+            $table->text('notes')->nullable();
+            $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
 
             $table->timestamps();
         });

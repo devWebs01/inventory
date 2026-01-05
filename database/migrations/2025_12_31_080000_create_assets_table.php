@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('category_id')
                 ->constrained()
                 ->nullOnDelete();
-            $table->decimal('purchase_price', 15, 2);
             $table->date('purchase_date');
             $table->string('condition');
             $table->text('notes')->nullable();

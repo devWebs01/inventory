@@ -20,7 +20,6 @@ class AssetFactory extends Factory
         return [
             'name' => fake()->words(3, true),
             'category_id' => Category::inRandomOrder()->first()?->id ?? Category::factory(),
-            'purchase_price' => fake()->randomFloat(2, 1000000, 50000000),
             'purchase_date' => fake()->date(),
             'condition' => fake()->randomElement(['Baik', 'Rusak Ringan', 'Rusak Berat']),
             'notes' => fake()->sentence(),

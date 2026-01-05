@@ -11,7 +11,6 @@ class StockMovement extends Model
     protected $fillable = [
         'movement_date',
         'type',
-        'source',
         'notes',
         'created_by',
         'attachments',
