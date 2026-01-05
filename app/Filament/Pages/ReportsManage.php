@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use AlperenErsoy\FilamentExport\Actions\FilamentExportBulkAction;
 use App\Models\StockMovement;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ReportsManage extends Page implements HasForms, HasTable
 {
+    use HasPageShield;
     use InteractsWithForms;
     use InteractsWithTable;
 
