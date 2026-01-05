@@ -10,6 +10,7 @@
         "alperenersoy/filament-export": "^4.0",
         "bezhansalleh/filament-shield": "^4.0",
         "caresome/filament-auth-designer": "^2.0",
+        "dutchcodingcompany/filament-developer-logins": "^2.0",
         "filament/filament": "^4.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
