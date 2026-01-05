@@ -61,7 +61,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
-                    ->navigationLabel('Hak Akses')
+                    ->navigationLabel('Peran/Hak Akses')
                     ->navigationGroup('Pengguna'),
                 AuthDesignerPlugin::make()
                     ->login(fn (AuthPageConfig $config) => $config
