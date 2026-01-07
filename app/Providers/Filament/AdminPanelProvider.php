@@ -61,20 +61,33 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make()
-                    ->navigationLabel('Peran/Hak Akses')
+                    ->navigationLabel('Hak Akses')
+                    ->modelLabel('Hak Akses')                       // string|Closure|null
                     ->navigationGroup('Pengguna'),
                 AuthDesignerPlugin::make()
-                    ->login(fn (AuthPageConfig $config) => $config
-                        ->media(url('https://images.pexels.com/photos/544965/pexels-photo-544965.jpeg'))
-                        ->mediaPosition(MediaPosition::Left)
-                        ->mediaSize('40%')
+                    ->login(
+                        fn(AuthPageConfig $config) => $config
+                            ->media(url('https://images.pexels.com/photos/544965/pexels-photo-544965.jpeg'))
+                            ->mediaPosition(MediaPosition::Left)
+                            ->mediaSize('40%')
                     ),
                 FilamentDeveloperLoginsPlugin::make()
                     ->enabled(app()->environment('local'))
-                    ->users([
-                        'Direktur' => 'direktur@testing.com',
-                        'Admin' => 'admin1@testing.com',
-                    ]),
+                    ->users(function () {
+                        // Mengambil satu user pertama untuk setiap role yang diinginkan
+                        $roles = ['super_admin', 'admin'];
+                        $devUsers = [];
+
+                        foreach ($roles as $role) {
+                            $user = \App\Models\User::role($role)->first();
+                            if ($user) {
+                                // Format: 'Nama Role (Nama User)' => 'email@user.com'
+                                $devUsers[ucfirst($role) . " ({$user->name})"] = $user->email;
+                            }
+                        }
+
+                        return $devUsers;
+                    }),
             ])
             ->authMiddleware([
                 Authenticate::class,
