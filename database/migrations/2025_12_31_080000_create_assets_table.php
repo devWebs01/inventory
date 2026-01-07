@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('category_id')
                 ->constrained()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
             $table->date('purchase_date');
             $table->string('condition');
             $table->text('notes')->nullable();

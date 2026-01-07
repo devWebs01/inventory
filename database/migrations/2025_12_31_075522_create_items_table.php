@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');                     // Nama barang
             $table->string('stock');                     // Stok barang
-            $table->foreignId('unit_id')->constrained()->cascadeOnDelete();                     // Satuan (pcs, zak, kg, m3)
+            $table->foreignId('unit_id')->constrained('units')->cascadeOnDelete();                     // Satuan (pcs, zak, kg, m3)
 
             $table->foreignId('category_id')            // Kategori barang
                 ->constrained()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             $table->text('description')->nullable();    // Keterangan tambahan
             $table->timestamps();
