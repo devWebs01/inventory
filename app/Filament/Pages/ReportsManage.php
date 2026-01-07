@@ -61,7 +61,7 @@ class ReportsManage extends Page implements HasForms, HasTable
                                 'out' => 'Barang Keluar',
                             ])
                             ->placeholder('Semua'),
-                        Select::make('user_id')
+                        Select::make('created_by') // Ubah dari 'user_id'
                             ->label('Dibuat Oleh')
                             ->options(\App\Models\User::orderBy('name')->pluck('name', 'id')->toArray())
                             ->searchable()
@@ -95,12 +95,12 @@ class ReportsManage extends Page implements HasForms, HasTable
             $query->where('type', $this->data['type']);
         }
 
-        if (! empty($this->data['user_id'])) {
-            $query->where('user_id', $this->data['user_id']);
+        if (! empty($this->data['created_by'])) {
+            $query->where('created_by', $this->data['created_by']);
         }
 
         if (! empty($this->data['notes'])) {
-            $query->where('notes', 'like', '%'.$this->data['notes'].'%');
+            $query->where('notes', 'like', '%' . $this->data['notes'] . '%');
         }
 
         return $query;
@@ -116,12 +116,12 @@ class ReportsManage extends Page implements HasForms, HasTable
             TextColumn::make('type')
                 ->label('Tipe')
                 ->badge()
-                ->color(fn (string $state): string => match ($state) {
+                ->color(fn(string $state): string => match ($state) {
                     'in' => 'success',
                     'out' => 'danger',
                     default => 'gray',
                 })
-                ->formatStateUsing(fn (string $state): string => match ($state) {
+                ->formatStateUsing(fn(string $state): string => match ($state) {
                     'in' => 'Masuk',
                     'out' => 'Keluar',
                     default => $state,
@@ -139,7 +139,7 @@ class ReportsManage extends Page implements HasForms, HasTable
                 ->sortable()
                 ->searchable(query: function (Builder $query, string $search): Builder {
                     return $query->whereHas('createdBy', function (Builder $query) use ($search) {
-                        $query->where('name', 'like', '%'.$search.'%');
+                        $query->where('name', 'like', '%' . $search . '%');
                     });
                 }),
             TextColumn::make('created_at')
@@ -154,7 +154,7 @@ class ReportsManage extends Page implements HasForms, HasTable
     {
         return [
             FilamentExportBulkAction::make('Export')
-                ->fileName('laporan-barang-'.date('Y-m-d-His')),
+                ->fileName('laporan-barang-' . date('Y-m-d-His')),
         ];
     }
 
