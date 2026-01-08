@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\StockOuts\Schemas;
 
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -22,6 +23,12 @@ class StockOutInfolist
                         TextEntry::make('notes')
                             ->label('Catatan')
                             ->placeholder('Tidak ada catatan')
+                            ->columnSpanFull(),
+                        ImageEntry::make('attachments')
+                            ->label('Lampiran')
+                            ->height('100%')
+                            ->width('100%')
+                            ->visible(fn ($record) => ! empty($record->attachments))
                             ->columnSpanFull(),
                         TextEntry::make('createdBy.name')
                             ->label('Dibuat Oleh'),

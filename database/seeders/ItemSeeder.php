@@ -6,6 +6,10 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Unit;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ItemSeeder extends Seeder
 {
@@ -14,6 +18,37 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
+        // Define image URLs for items
+        $itemImages = [
+            // Material Bangunan
+            'Semen Portland 50kg' => 'https://siplah-oss.tokoladang.co.id/merchant/33419/product/O0HJSXeuxvYH9FnYLpQrqaD5Qx5xftpHfmj3sPSf.webp',
+            'Semen Gresik 50kg' => 'https://gemilang-store.com/images/cimage/webroot/img.php?src=..//images/838/_assets/products/215000001/215000001.png&width=1400&height=1050&fill-to-fit=ffffff&force-bg=1&bg-color=ffffff&watermark=1&watermark_url=https://gemilang-store.com/_assets/images/watermark.png',
+            'Bata Merah' => 'https://udssj.com/images/gallery_produk/udssj-bata-merah-press-standart42.jpeg',
+            'Bata Ringan Hebel' => 'https://bintorohebel.co.id/wp-content/uploads/2023/06/HEBEL-AAC-NEW.png',
+            'Pasir Beton' => 'https://static-tokodaring.tisera.id/prod/images/produk_gambar/68ff5b801b560.jpg',
+            'Besi Beton 10mm' => 'https://juraganmaterial.id/static/product/f8qnlLCwEzSAuZtGdXpw3FZ88SOBF1Mj.png',
+
+            // Consumable
+            'Cat Tembok 5kg' => 'https://images.tokopedia.net/img/cache/700/aphluv/1997/1/1/77db3c991f17474aa2452b29e332bc45~.jpeg',
+            'Kabel Listrik 1.5mm' => 'https://bosara.sultraprov.go.id/asset/foto_produk/product-toko-avo-listrik-dan-elektronik-20240515073546189.jpg',
+            'Stop Kontak' => 'https://images.tokopedia.net/img/cache/700/VqbcmM/2023/7/12/557770a6-3f5e-4245-9767-9bce739b6e6f.png',
+
+            // Sparepart
+            'Oli Mesin 1L' => 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full/catalog-image/98/MTA-155077135/pertamina_pertamina_pelumas_mesin_mobil_bensin_-_mesran_-_prima_xp_-_fastron_kemasan_isi_1_liter_full05_saxzvs8.jpg',
+            'AKI 12V' => 'https://otoklix-production.s3.amazonaws.com/uploads/2022/09/harga-aki-kering.jpg',
+            'Ban Luar 4x6' => 'https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/94/MTA-160870223/pertamina_oli_mesran_sae_40_1lt_pertamina_oil_full04_iudavqce.jpg', // placeholder sementara (oli), karena hasil ban kurang bagus – ganti manual kalau perlu
+
+            // Peralatan
+            'Bor Listrik' => 'https://www.cnindonesia.com/image-product/img27-1400166484.jpg',
+            'Gerinda Tangan' => 'https://img.lazcdn.com/g/p/2c0b3a9d793baca784a66088c0166aef.jpg_720x720q80.jpg',
+            'Palu' => 'https://www.pratamabangunan.id/contents/product_detailbmz6tG20160811161822.JPG',
+
+            // Material Proyek
+            'Keramik Lantai 40x40' => 'https://cdn.brighton.co.id/Uploads/Images/5795267/modadUp0/harga-keramik-40x40.webp',
+            'Keramik Dinding 25x40' => 'https://www.qhomemart.com/wp-content/uploads/2024/10/f7dba00c-f5bd-4dc8-842a-4a184941084c.jpg',
+            'Genteng Keramik' => 'https://sakaabadi.com/wp-content/uploads/2022/02/IMG_20200406_135723-scaled.jpg',
+        ];
+
         $items = [
             // Material Bangunan
             ['name' => 'Semen Portland 50kg', 'category' => 'Material Bangunan', 'unit' => 'zak', 'stock' => 150, 'description' => 'Semen Portland kualitas standar SNI'],
@@ -84,24 +119,63 @@ class ItemSeeder extends Seeder
             ['name' => 'Rangka Atap Baja Ringan', 'category' => 'Material Proyek', 'unit' => 'set', 'stock' => 5, 'description' => 'Rangka atap baja ringan'],
         ];
 
+        // ... di dalam method run()
+
         foreach ($items as $item) {
             $category = Category::where('name', $item['category'])->first();
             $unit = Unit::where('name', $item['unit'])->first();
 
-            if ($category && $unit) {
-                Item::firstOrCreate(
-                    [
-                        'name' => $item['name'],
-                    ],
-                    [
-                        'stock' => $item['stock'],
-                        'category_id' => $category->id,
-                        'unit_id' => $unit->id,
-                        'description' => $item['description'],
-                        'image' => null,
-                    ]
-                );
+            if (! $category || ! $unit) {
+                // Skip kalau category/unit tidak ada
+                continue;
             }
+
+            $imagePath = null;
+
+            if (isset($itemImages[$item['name']])) {
+                try {
+                    $imageUrl = $itemImages[$item['name']];
+
+                    $response = Http::timeout(30)
+                        ->withHeaders(['User-Agent' => 'Laravel Seeder'])
+                        ->get($imageUrl);
+
+                    if ($response->successful() && $response->header('Content-Type') !== 'text/html') {
+                        $imageContents = $response->body();
+
+                        // Ambil ekstensi dari URL atau dari content-type
+                        $extension = pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION);
+                        if (empty($extension)) {
+                            $contentType = $response->header('Content-Type');
+                            $extension = match (true) {
+                                str_contains($contentType, 'jpeg') => 'jpg',
+                                str_contains($contentType, 'png') => 'png',
+                                str_contains($contentType, 'webp') => 'webp',
+                                default => 'jpg',
+                            };
+                        }
+
+                        $fileName = 'items/'.Str::slug($item['name']).'-'.Str::random(8).'.'.$extension;
+                        Storage::disk('public')->put($fileName, $imageContents);
+                        $imagePath = $fileName;
+                    } else {
+                        Log::warning("Gagal download gambar untuk {$item['name']}: HTTP {$response->status()}");
+                    }
+                } catch (\Exception $e) {
+                    Log::warning("Exception saat download gambar {$item['name']}: ".$e->getMessage());
+                }
+            }
+
+            Item::updateOrCreate(
+                ['name' => $item['name']], // unique key
+                [
+                    'stock' => $item['stock'],
+                    'category_id' => $category->id,
+                    'unit_id' => $unit->id,
+                    'description' => $item['description'] ?? null,
+                    'image' => $imagePath,
+                ]
+            );
         }
     }
 }

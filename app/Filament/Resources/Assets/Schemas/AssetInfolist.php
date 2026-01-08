@@ -18,7 +18,8 @@ class AssetInfolist
                     ->schema([
                         ImageEntry::make('image')
                             ->label('Gambar')
-                            ->height(200)
+                            ->height('100%')
+                            ->width('100%')
                             ->defaultImageUrl(url('/images/placeholder-asset.png'))
                             ->columnSpanFull(),
                         TextEntry::make('name')

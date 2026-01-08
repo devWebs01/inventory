@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Asset;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AssetSeeder extends Seeder
 {
@@ -13,6 +15,18 @@ class AssetSeeder extends Seeder
      */
     public function run(): void
     {
+        // Define image URLs for assets
+        $assetImages = [
+            'Excavator CAT 320D' => 'https://images.unsplash.com/photo-1580901368919-7738efb0f87e?w=800',
+            'Bulldozer Komatsu D65' => 'https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?w=800',
+            'Toyota Hilux Double Cabin' => 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800',
+            'Mitsubishi Triton' => 'https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=800',
+            'Gedung Kantor Pusat' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+            'Gudang Utama' => 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800',
+            'Generator Set 500 KVA' => 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800',
+            'AC Split 2 PK' => 'https://images.unsplash.com/photo-1617888802304-f2ae37ea9ddb?w=800',
+        ];
+
         // Get asset categories only
         $assetCategories = Category::where('type', 'asset')
             ->orWhere('type', 'both')
@@ -86,7 +100,20 @@ class AssetSeeder extends Seeder
             ],
         ];
 
-        foreach ($assets as $asset) {
+        foreach ($assets as &$asset) {
+            // Download and store image if URL exists
+            if (isset($assetImages[$asset['name']])) {
+                try {
+                    $imageUrl = $assetImages[$asset['name']];
+                    $imageContents = file_get_contents($imageUrl);
+                    $fileName = 'assets/'.Str::slug($asset['name']).'-'.Str::random(8).'.jpg';
+                    Storage::disk('public')->put($fileName, $imageContents);
+                    $asset['image'] = $fileName;
+                } catch (\Exception $e) {
+                    $asset['image'] = null;
+                }
+            }
+
             Asset::firstOrCreate(
                 ['name' => $asset['name']],
                 $asset

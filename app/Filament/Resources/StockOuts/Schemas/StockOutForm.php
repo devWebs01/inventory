@@ -41,8 +41,9 @@ class StockOutForm
                             ->rows(3)
                             ->columnSpanFull(),
                         FileUpload::make('attachments')
-                            ->label('Lampiran (Opsional)')
+                            ->label('Lampiran Gambar (Opsional)')
                             ->multiple()
+                            ->image()
                             ->downloadable()
                             ->openable()
                             ->directory('stock-out-attachments')
