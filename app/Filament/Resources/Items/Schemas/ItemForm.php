@@ -87,7 +87,7 @@ class ItemForm
                                     ->unique(Unit::class, 'name'),
                             ]),
                         Textarea::make('description')
-                            ->label('Deskripsi')
+                            ->label('Deskripsi (Opsional)')
                             ->placeholder('Keterangan tambahan tentang barang...')
                             ->rows(3)
                             ->columnSpanFull(),

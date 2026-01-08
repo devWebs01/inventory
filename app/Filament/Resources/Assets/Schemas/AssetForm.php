@@ -82,7 +82,7 @@ class AssetForm
                             ])
                             ->default('Baik'),
                         Textarea::make('notes')
-                            ->label('Catatan')
+                            ->label('Catatan (Opsional)')
                             ->placeholder('Keterangan tambahan tentang aset...')
                             ->rows(3)
                             ->columnSpanFull(),

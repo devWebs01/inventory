@@ -36,12 +36,12 @@ class StockInForm
                             ->visibleOn('edit')
                             ->columnSpanFull(),
                         Textarea::make('notes')
-                            ->label('Catatan')
+                            ->label('Catatan (Opsional)')
                             ->placeholder('Catatan tambahan tentang transaksi...')
                             ->rows(3)
                             ->columnSpanFull(),
                         FileUpload::make('attachments')
-                            ->label('Lampiran')
+                            ->label('Lampiran (Opsional)')
                             ->multiple()
                             ->downloadable()
                             ->openable()
@@ -134,7 +134,7 @@ class StockInForm
                                                     ->unique(Unit::class, 'name'),
                                             ]),
                                         Textarea::make('description')
-                                            ->label('Deskripsi')
+                                            ->label('Deskripsi (Opsional)')
                                             ->placeholder('Keterangan tambahan tentang barang...')
                                             ->rows(3)
                                             ->columnSpanFull(),

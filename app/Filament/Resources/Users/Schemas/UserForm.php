@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Password;
@@ -26,12 +27,6 @@ class UserForm
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
-                        Forms\Components\DateTimePicker::make('email_verified_at')
-                            ->label('Email Terverifikasi Pada')
-                            ->native(false)
-                            ->readOnly()
-                            ->hidden(fn (string $context): bool => $context === 'create')
-                            ->helperText('Otomatis terisi saat user verifikasi email'),
                         Forms\Components\TextInput::make('password')
                             ->label('Password')
                             ->password()
@@ -40,7 +35,12 @@ class UserForm
                             ->rule(Password::default())
                             ->dehydrateStateUsing(fn ($state) => filled($state) ? \Illuminate\Support\Facades\Hash::make($state) : null)
                             ->revealable()
-                            ->helperText('Minimal 8 karakter'),
+                            ->helperText('Minimal 8 karakter')
+                            ->columnSpanFull(),
+                        Hidden::make('email_verified_at')
+                            ->visible(fn (string $operation): bool => $operation === 'create')
+                            ->default(now())
+                            ->dehydrateStateUsing(fn ($state) => now()),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),
@@ -52,8 +52,8 @@ class UserForm
                                 name: 'roles',
                                 titleAttribute: 'name',
                             )
-                            ->multiple()
                             ->preload()
+                            ->required()
                             ->searchable()
                             ->label('Role')
                             ->helperText('Pilih satu atau lebih role untuk pengguna ini'),
