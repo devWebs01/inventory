@@ -100,7 +100,7 @@ class ReportsManage extends Page implements HasForms, HasTable
         }
 
         if (! empty($this->data['notes'])) {
-            $query->where('notes', 'like', '%' . $this->data['notes'] . '%');
+            $query->where('notes', 'like', '%'.$this->data['notes'].'%');
         }
 
         return $query;
@@ -116,12 +116,12 @@ class ReportsManage extends Page implements HasForms, HasTable
             TextColumn::make('type')
                 ->label('Tipe')
                 ->badge()
-                ->color(fn(string $state): string => match ($state) {
+                ->color(fn (string $state): string => match ($state) {
                     'in' => 'success',
                     'out' => 'danger',
                     default => 'gray',
                 })
-                ->formatStateUsing(fn(string $state): string => match ($state) {
+                ->formatStateUsing(fn (string $state): string => match ($state) {
                     'in' => 'Masuk',
                     'out' => 'Keluar',
                     default => $state,
@@ -139,7 +139,7 @@ class ReportsManage extends Page implements HasForms, HasTable
                 ->sortable()
                 ->searchable(query: function (Builder $query, string $search): Builder {
                     return $query->whereHas('createdBy', function (Builder $query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
+                        $query->where('name', 'like', '%'.$search.'%');
                     });
                 }),
             TextColumn::make('created_at')
@@ -154,7 +154,7 @@ class ReportsManage extends Page implements HasForms, HasTable
     {
         return [
             FilamentExportBulkAction::make('Export')
-                ->fileName('laporan-barang-' . date('Y-m-d-His')),
+                ->fileName('laporan-barang-'.date('Y-m-d-His')),
         ];
     }
 

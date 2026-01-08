@@ -66,7 +66,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Pengguna'),
                 AuthDesignerPlugin::make()
                     ->login(
-                        fn(AuthPageConfig $config) => $config
+                        fn (AuthPageConfig $config) => $config
                             ->media(url('https://images.pexels.com/photos/544965/pexels-photo-544965.jpeg'))
                             ->mediaPosition(MediaPosition::Left)
                             ->mediaSize('40%')
@@ -82,7 +82,7 @@ class AdminPanelProvider extends PanelProvider
                             $user = \App\Models\User::role($role)->first();
                             if ($user) {
                                 // Format: 'Nama Role (Nama User)' => 'email@user.com'
-                                $devUsers[ucfirst($role) . " ({$user->name})"] = $user->email;
+                                $devUsers[ucfirst($role)." ({$user->name})"] = $user->email;
                             }
                         }
 

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\StockOuts\Schemas;
 
+use App\Models\Category;
+use App\Models\Unit;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
@@ -26,12 +28,13 @@ class StockOutForm
                             ->native(false)
                             ->default(now())
                             ->closeOnDateSelection()
-                            ->columnSpan(fn () => request()->routeIs('*create') ? 'full' : 1),
+                            ->columnSpanFull(),
                         Select::make('created_by')
                             ->label('Dibuat Oleh')
                             ->relationship('createdBy', 'name')
                             ->disabled()
-                            ->visibleOn('edit'),
+                            ->visibleOn('edit')
+                            ->columnSpanFull(),
                         Textarea::make('notes')
                             ->label('Catatan')
                             ->placeholder('Catatan tambahan tentang transaksi...')
@@ -64,26 +67,76 @@ class StockOutForm
                                     ->createOptionForm([
                                         TextInput::make('name')
                                             ->label('Nama Barang')
+                                            ->placeholder('Contoh: Semen Portland 50kg')
                                             ->required()
-                                            ->autocomplete(false),
+                                            ->maxLength(255)
+                                            ->autocomplete(false)
+                                            ->columnSpanFull(),
+                                        Select::make('category_id')
+                                            ->label('Kategori')
+                                            ->options(
+                                                Category::query()
+                                                    ->whereIn('type', ['inventory', 'both'])
+                                                    ->get()
+                                                    ->mapWithKeys(function ($category) {
+                                                        $color = match ($category->type) {
+                                                            'inventory' => '#10b981',
+                                                            'both' => '#8b5cf6',
+                                                            default => '#6b7280',
+                                                        };
 
+                                                        return [
+                                                            $category->id => "{$category->name} <span style=\"color:{$color};font-weight:bold;font-size:0.75em\">[".self::getTypeLabel($category->type).']</span>',
+                                                        ];
+                                                    })
+                                                    ->toArray()
+                                            )
+                                            ->placeholder('Pilih kategori')
+                                            ->required()
+                                            ->allowHtml()
+                                            ->searchable()
+                                            ->createOptionForm([
+                                                TextInput::make('name')
+                                                    ->label('Nama Kategori')
+                                                    ->required()
+                                                    ->unique(ignoreRecord: true),
+                                                Select::make('type')
+                                                    ->label('Tipe Kategori')
+                                                    ->options([
+                                                        'asset' => 'Aset',
+                                                        'inventory' => 'Barang / Persediaan',
+                                                        'both' => 'Aset & Barang',
+                                                        'other' => 'Lainnya',
+                                                    ])
+                                                    ->required()
+                                                    ->default('inventory'),
+                                            ])
+                                            ->columnSpanFull(),
+                                        TextInput::make('stock')
+                                            ->label('Stok Saat Ini')
+                                            ->placeholder('0')
+                                            ->required()
+                                            ->numeric()
+                                            ->default(0)
+                                            ->minValue(0),
                                         Select::make('unit_id')
                                             ->label('Satuan')
                                             ->relationship('unit', 'name')
-                                            ->required()
+                                            ->placeholder('Pilih satuan')
                                             ->searchable()
-                                            ->preload(),
-
-                                        Select::make('category_id')
-                                            ->label('Kategori')
-                                            ->relationship('category', 'name')
+                                            ->preload()
                                             ->required()
-                                            ->searchable()
-                                            ->preload(),
-
+                                            ->createOptionForm([
+                                                TextInput::make('name')
+                                                    ->label('Nama Satuan')
+                                                    ->required()
+                                                    ->unique(Unit::class, 'name'),
+                                            ]),
                                         Textarea::make('description')
                                             ->label('Deskripsi')
-                                            ->rows(2),
+                                            ->placeholder('Keterangan tambahan tentang barang...')
+                                            ->rows(3)
+                                            ->columnSpanFull(),
                                     ]),
 
                                 TextInput::make('quantity')
@@ -105,5 +158,16 @@ class StockOutForm
                     ])
                     ->columnSpanFull(),
             ]);
+    }
+
+    private static function getTypeLabel(string $type): string
+    {
+        return match ($type) {
+            'asset' => 'Aset',
+            'inventory' => 'Barang / Persediaan',
+            'both' => 'Aset & Barang',
+            'other' => 'Lainnya',
+            default => $type,
+        };
     }
 }
