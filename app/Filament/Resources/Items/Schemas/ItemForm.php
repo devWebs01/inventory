@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Items\Schemas;
 
 use App\Models\Category;
 use App\Models\Unit;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -19,6 +20,12 @@ class ItemForm
                 Section::make('Informasi Barang')
                     ->description('Kelola data barang atau persediaan')
                     ->schema([
+                        FileUpload::make('image')
+                            ->label('Gambar Barang')
+                            ->image()
+                            ->directory('items')
+                            ->imageEditor()
+                            ->columnSpanFull(),
                         TextInput::make('name')
                             ->label('Nama Barang')
                             ->placeholder('Contoh: Semen Portland 50kg')

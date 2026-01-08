@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\StockIns\Schemas;
 
-use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
@@ -30,10 +29,6 @@ class StockInInfolist
                             ->label('Dibuat Pada')
                             ->dateTime('d M Y H:i')
                             ->placeholder('-'),
-                        ImageEntry::make('attachments')
-                            ->label('Lampiran')
-                            ->visible(fn ($record) => ! empty($record->attachments))
-                            ->columnSpanFull(),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),

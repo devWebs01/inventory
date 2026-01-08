@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Assets\Schemas;
 
 use App\Models\Category;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -19,6 +20,12 @@ class AssetForm
                 Section::make('Informasi Aset Tetap')
                     ->description('Kelola data aset tetap perusahaan')
                     ->schema([
+                        FileUpload::make('image')
+                            ->label('Gambar Aset')
+                            ->image()
+                            ->directory('assets')
+                            ->imageEditor()
+                            ->columnSpanFull(),
                         TextInput::make('name')
                             ->label('Nama Aset')
                             ->placeholder('Contoh: Excavator CAT 320D')

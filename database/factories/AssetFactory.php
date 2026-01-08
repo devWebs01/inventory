@@ -23,6 +23,7 @@ class AssetFactory extends Factory
             'purchase_date' => fake()->date(),
             'condition' => fake()->randomElement(['Baik', 'Rusak Ringan', 'Rusak Berat']),
             'notes' => fake()->sentence(),
+            'image' => null,
         ];
     }
 }

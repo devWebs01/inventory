@@ -98,6 +98,7 @@ class ItemSeeder extends Seeder
                         'category_id' => $category->id,
                         'unit_id' => $unit->id,
                         'description' => $item['description'],
+                        'image' => null,
                     ]
                 );
             }

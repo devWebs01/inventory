@@ -26,6 +26,7 @@ class AssetSeeder extends Seeder
                 'purchase_date' => '2023-01-15',
                 'condition' => 'Baik',
                 'notes' => 'Digunakan untuk proyek penggalian',
+                'image' => null,
             ],
             [
                 'name' => 'Bulldozer Komatsu D65',
@@ -33,6 +34,7 @@ class AssetSeeder extends Seeder
                 'purchase_date' => '2023-03-20',
                 'condition' => 'Baik',
                 'notes' => 'Unit pengupas tanah',
+                'image' => null,
             ],
             [
                 'name' => 'Toyota Hilux Double Cabin',
@@ -40,6 +42,7 @@ class AssetSeeder extends Seeder
                 'purchase_date' => '2023-06-10',
                 'condition' => 'Baik',
                 'notes' => 'Kendaraan operasional lapangan',
+                'image' => null,
             ],
             [
                 'name' => 'Mitsubishi Triton',
@@ -47,6 +50,7 @@ class AssetSeeder extends Seeder
                 'purchase_date' => '2023-07-05',
                 'condition' => 'Rusak Ringan',
                 'notes' => 'Perlu service rutin',
+                'image' => null,
             ],
             [
                 'name' => 'Gedung Kantor Pusat',
@@ -54,6 +58,7 @@ class AssetSeeder extends Seeder
                 'purchase_date' => '2022-01-01',
                 'condition' => 'Baik',
                 'notes' => 'Bangunan 3 lantai',
+                'image' => null,
             ],
             [
                 'name' => 'Gudang Utama',
@@ -61,6 +66,7 @@ class AssetSeeder extends Seeder
                 'purchase_date' => '2022-03-15',
                 'condition' => 'Baik',
                 'notes' => 'Luas 1000 m2',
+                'image' => null,
             ],
             [
                 'name' => 'Generator Set 500 KVA',
@@ -68,6 +74,7 @@ class AssetSeeder extends Seeder
                 'purchase_date' => '2023-04-20',
                 'condition' => 'Baik',
                 'notes' => 'Gensi utama kantor',
+                'image' => null,
             ],
             [
                 'name' => 'AC Split 2 PK',
@@ -75,6 +82,7 @@ class AssetSeeder extends Seeder
                 'purchase_date' => '2023-05-10',
                 'condition' => 'Rusak Ringan',
                 'notes' => 'Perlu cuci freon',
+                'image' => null,
             ],
         ];
 

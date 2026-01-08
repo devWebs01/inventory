@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Assets\Schemas;
 
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -15,6 +16,11 @@ class AssetInfolist
                 Section::make('Detail Aset Tetap')
                     ->description('Informasi lengkap tentang aset tetap')
                     ->schema([
+                        ImageEntry::make('image')
+                            ->label('Gambar')
+                            ->height(200)
+                            ->defaultImageUrl(url('/images/placeholder-asset.png'))
+                            ->columnSpanFull(),
                         TextEntry::make('name')
                             ->label('Nama Aset')
                             ->columnSpanFull(),

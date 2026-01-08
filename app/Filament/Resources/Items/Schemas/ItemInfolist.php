@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Items\Schemas;
 
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -15,6 +16,11 @@ class ItemInfolist
                 Section::make('Detail Barang')
                     ->description('Informasi lengkap tentang barang')
                     ->schema([
+                        ImageEntry::make('image')
+                            ->label('Gambar')
+                            ->height(200)
+                            ->defaultImageUrl(url('/images/placeholder-item.png'))
+                            ->columnSpanFull(),
                         TextEntry::make('name')
                             ->label('Nama Barang')
                             ->columnSpanFull(),
